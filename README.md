@@ -1,7 +1,5 @@
 # LibraryDBMS
-Version 1
-
-Features
+Version 1 Features
 
 Users can add books, view book information and remove books.
 
