@@ -401,6 +401,13 @@ public class LibraryDBMS_ver1 extends Application{
 				
 			});
 			
+			btn_Cancel.setOnMouseClicked(eCancel -> {
+				listViewBooks.refresh();
+				listViewBooks.setDisable(false);
+				btn_Add_Book.setDisable(false);
+				primaryStage2.close();
+			});
+			
 			primaryStage2.setOnCloseRequest(event -> {
 				listViewBooks.setDisable(false);
 				btn_Add_Book.setDisable(false);
