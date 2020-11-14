@@ -35,6 +35,9 @@ public class LibraryDBMS_ver1 extends Application{
 	private static FileInputStream fin = null;
 	private static ObjectInputStream ois = null; 
 	
+	private static ArrayList<String> my_Current_Edit_AuthorList = new ArrayList<String>();
+	private static ArrayList<String> my_Current_Edit_KeywordList = new ArrayList<String>();
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -190,7 +193,7 @@ public class LibraryDBMS_ver1 extends Application{
 	    
 		btn_Add_Book.setOnMouseClicked(e -> {
 			listViewBooks.setDisable(true);
-						
+			lbl_DateShow.setText("Date Added: ");			
 			lbl_NumPagesShow.setText("Number of Pages: ");
     		lbl_ISBNShow.setText("ISBN#: ");
     		lbl_KeywordsShow.setText("Keywords: ");
@@ -252,7 +255,7 @@ public class LibraryDBMS_ver1 extends Application{
 		    });
 		    
 			btn_Add.setOnMouseClicked(eAddAuthor -> {
-				if (tf_Author.getText()!="") {
+				if (!tf_Author.getText().equals("")) {
 					my_Current_Book.addAuthor(tf_Author.getText());
 					tf_Author.setText("");
 					fillAuthorList(author_data);
@@ -380,7 +383,7 @@ public class LibraryDBMS_ver1 extends Application{
 		    });
 			
 			btn_AddKeyword.setOnMouseClicked(eAddKeyword -> {
-				if (tf_Keywords.getText()!="") {
+				if (!tf_Keywords.getText().equals("")) {
 					my_Current_Book.addKeyword(tf_Keywords.getText());
 					tf_Keywords.setText("");
 					fillKeywordsList(keywords_data);
@@ -428,10 +431,252 @@ public class LibraryDBMS_ver1 extends Application{
 		
 		btn_Edit_Book.setOnMouseClicked(e -> {
 			
+			listViewBooks.setDisable(true);
+			lbl_DateShow.setText("Date Added: ");			
+			lbl_NumPagesShow.setText("Number of Pages: ");
+    		lbl_ISBNShow.setText("ISBN#: ");
+    		lbl_KeywordsShow.setText("Keywords: ");
 			
+			Pane addABookPane = new Pane();	
 			
+			Label lbl_Book_Title = new Label("Book Title: ");
+			lbl_Book_Title.setLayoutX(10);
+			lbl_Book_Title.setLayoutY(10);
+			addABookPane.getChildren().add(lbl_Book_Title);
+			
+			TextField tf_Book_Title = new TextField();
+			tf_Book_Title.setText(my_Current_Book.getTitle());
+			tf_Book_Title.setLayoutX(70);
+			tf_Book_Title.setLayoutY(10);
+			tf_Book_Title.setEditable(true);
+			addABookPane.getChildren().add(tf_Book_Title);	
+			
+			Label lbl_Authors = new Label("Authors: ");
+			lbl_Authors.setLayoutX(10);
+			lbl_Authors.setLayoutY(40);
+			addABookPane.getChildren().add(lbl_Authors);
+			
+			ObservableList<String> author_data = FXCollections.observableArrayList();
+		    ListView<String> listViewAuthors = new ListView<String>(author_data);
+		    listViewAuthors.setLayoutX(10);
+		    listViewAuthors.setLayoutY(60);
+		    listViewAuthors.setPrefSize(150, 80);
+		    fillAuthorList(author_data);
+		    addABookPane.getChildren().add(listViewAuthors);
+		    
+		    TextField tf_Author = new TextField();
+		    tf_Author.setLayoutX(165);
+		    tf_Author.setLayoutY(60);
+		    tf_Author.setEditable(true);
+			addABookPane.getChildren().add(tf_Author);	
+			
+			Button btn_Add = new Button("Add!");
+			btn_Add.setLayoutX(180);
+			btn_Add.setLayoutY(100);
+			addABookPane.getChildren().add(btn_Add);
+			
+			Button btn_Remove = new Button("Clear");
+			btn_Remove.setDisable(true);
+			btn_Remove.setLayoutX(240);
+			btn_Remove.setLayoutY(100);
+			addABookPane.getChildren().add(btn_Remove);
+		    
+			my_Current_Edit_AuthorList = (ArrayList<String>)(my_Current_Book.getAuthors()).clone();
+			
+			listViewAuthors.setOnMouseClicked(elistViewAuthors -> {
+				
+		    	my_Current_Author = listViewAuthors.getSelectionModel().getSelectedItem();
+		    	if (my_Current_Author!= null) {
+		    		btn_Remove.setDisable(false);
+		    		tf_Author.setText(my_Current_Author);
+		    	}
+		    	else {
+		    		btn_Remove.setDisable(true);
+		    	}
+		    });
+		    
+			btn_Add.setOnMouseClicked(eAddAuthor -> {
+				if (!tf_Author.getText().equals("")) {
+					my_Current_Edit_AuthorList.add(tf_Author.getText());
+					tf_Author.setText("");
+					fillEditAuthorList(author_data);
+					listViewAuthors.refresh();
+				}
+			});
+			
+			btn_Remove.setOnMouseClicked(eAddAuthor -> {
+				my_Current_Edit_AuthorList.clear();
+				fillEditAuthorList(author_data);
+				listViewBooks.refresh();
+				tf_Author.setText("");
+			});
+			
+			Button btn_Save = new Button("Save!");
+			btn_Save.setLayoutX(275);
+			btn_Save.setLayoutY(380);
+			addABookPane.getChildren().add(btn_Save);
+			
+			Button btn_Cancel = new Button("Cancel");
+			btn_Cancel.setLayoutX(200);
+			btn_Cancel.setLayoutY(380);
+			addABookPane.getChildren().add(btn_Cancel);
+			
+			Scene addABookScene = new Scene(addABookPane, 350, 420);
+			Stage primaryStage2 = new Stage();
+						
+			primaryStage2.setTitle("Edit Book");
+			primaryStage2.setScene(addABookScene);
+			primaryStage2.setResizable(false);
+			primaryStage2.show();
+			
+			btn_Add_Book.setDisable(true);
+			btn_Edit_Book.setDisable(true);
+			btn_Remove_Book.setDisable(true);
+			
+			Label lbl_Volume = new Label("Volume: ");
+			lbl_Volume.setLayoutX(10);
+			lbl_Volume.setLayoutY(150);
+			addABookPane.getChildren().add(lbl_Volume);
+			
+			TextField tf_Volume = new TextField();
+			tf_Volume.setText(my_Current_Book.getVolume());
+			tf_Volume.setLayoutX(110);
+			tf_Volume.setLayoutY(150);
+			tf_Volume.setMaxWidth(110);
+			tf_Volume.setEditable(true);
+			addABookPane.getChildren().add(tf_Volume);
+			
+			Label lbl_Edition = new Label("Edition: ");
+			lbl_Edition.setLayoutX(10);
+			lbl_Edition.setLayoutY(180);
+			addABookPane.getChildren().add(lbl_Edition);
+			
+			TextField tf_Edition = new TextField();
+			tf_Edition.setText(my_Current_Book.getEdition());
+			tf_Edition.setLayoutX(110);
+			tf_Edition.setLayoutY(180);
+			tf_Edition.setMaxWidth(110);
+			tf_Edition.setEditable(true);
+			addABookPane.getChildren().add(tf_Edition);
+			
+			Label lbl_NumPages = new Label("Number of Pages: ");
+			lbl_NumPages.setLayoutX(10);
+			lbl_NumPages.setLayoutY(210);
+			addABookPane.getChildren().add(lbl_NumPages);
+			
+			TextField tf_NumPages = new TextField();
+			tf_NumPages.setText(my_Current_Book.getNumber_Of_Pages());
+			tf_NumPages.setLayoutX(110);
+			tf_NumPages.setLayoutY(210);
+			tf_NumPages.setEditable(true);
+			tf_NumPages.setMaxWidth(110);
+			addABookPane.getChildren().add(tf_NumPages);
+			
+			Label lbl_ISBN = new Label("ISBN#: ");
+			lbl_ISBN.setLayoutX(10);
+			lbl_ISBN.setLayoutY(240);
+			addABookPane.getChildren().add(lbl_ISBN);
+			
+			TextField tf_ISBN = new TextField();
+			tf_ISBN.setText(my_Current_Book.getISBN());
+			tf_ISBN.setLayoutX(110);
+			tf_ISBN.setLayoutY(240);
+			tf_ISBN.setEditable(true);
+			tf_ISBN.setMaxWidth(110);
+			addABookPane.getChildren().add(tf_ISBN);
+						
+			Label lbl_Keywords = new Label("Keywords: ");
+			lbl_Keywords.setLayoutX(10);
+			lbl_Keywords.setLayoutY(270);
+			addABookPane.getChildren().add(lbl_Keywords);
+			
+			my_Current_Edit_KeywordList = (ArrayList<String>)(my_Current_Book.getKeywords()).clone();
+			
+			ObservableList<String> keywords_data = FXCollections.observableArrayList();
+		    ListView<String> listViewKeywords = new ListView<String>(keywords_data);
+		    listViewKeywords.setLayoutX(10);
+		    listViewKeywords.setLayoutY(290);
+		    listViewKeywords.setPrefSize(150, 80);
+		    fillKeywordsList(keywords_data);
+		    addABookPane.getChildren().add(listViewKeywords);
+		    
+		    TextField tf_Keywords = new TextField();
+		    tf_Keywords.setLayoutX(165);
+		    tf_Keywords.setLayoutY(290);
+		    tf_Keywords.setEditable(true);
+			addABookPane.getChildren().add(tf_Keywords);	
+			
+			Button btn_AddKeyword = new Button("Add!");
+			btn_AddKeyword.setLayoutX(180);
+			btn_AddKeyword.setLayoutY(330);
+			addABookPane.getChildren().add(btn_AddKeyword);
+			
+			Button btn_RemoveKeyword = new Button("Clear");
+			btn_RemoveKeyword.setDisable(true);
+			btn_RemoveKeyword.setLayoutX(240);
+			btn_RemoveKeyword.setLayoutY(330);
+			addABookPane.getChildren().add(btn_RemoveKeyword);
+			
+			listViewKeywords.setOnMouseClicked(elistViewKeywords -> {
+				
+		    	my_Current_Keyword = listViewKeywords.getSelectionModel().getSelectedItem();
+		    	if (my_Current_Keyword!= null) {
+		    		btn_RemoveKeyword.setDisable(false);
+		    		tf_Keywords.setText(my_Current_Keyword);
+		    	}
+		    	else {
+		    		btn_RemoveKeyword.setDisable(true);
+		    	}
+		    });
+			
+			btn_AddKeyword.setOnMouseClicked(eAddKeyword -> {
+				if (!tf_Keywords.getText().equals("")) {
+					my_Current_Edit_KeywordList.add(tf_Keywords.getText());
+					tf_Keywords.setText("");
+					fillEditKeywordsList(keywords_data);
+					listViewKeywords.refresh();
+				}
+			});
+			
+			btn_RemoveKeyword.setOnMouseClicked(eAddKeyword -> {
+				my_Current_Edit_KeywordList.clear();
+				fillEditKeywordsList(keywords_data);
+				listViewKeywords.refresh();
+				tf_Keywords.setText("");
+			});
+			
+			btn_Save.setOnMouseClicked(eSave -> {
+				
+				my_Current_Book.setTitle(tf_Book_Title.getText());
+				my_Current_Book.setVolume(tf_Volume.getText());
+				my_Current_Book.setEdition(tf_Edition.getText());
+				my_Current_Book.setNumber_Of_Pages(tf_NumPages.getText());
+				my_Current_Book.setISBN(tf_ISBN.getText());
+				my_Current_Book.setAuthors(my_Current_Edit_AuthorList);
+				my_Current_Book.setKeywords(my_Current_Edit_KeywordList);
+				listViewBooks.setDisable(false);
+				fillBookList(book_data);
+				listViewBooks.refresh();
+				btn_Add_Book.setDisable(false);
+				primaryStage2.close();
+				
+			});
+			
+			btn_Cancel.setOnMouseClicked(eCancel -> {
+				listViewBooks.refresh();
+				listViewBooks.setDisable(false);
+				btn_Add_Book.setDisable(false);
+				primaryStage2.close();
+			});
+			
+			primaryStage2.setOnCloseRequest(event -> {
+				listViewBooks.setDisable(false);
+				btn_Add_Book.setDisable(false);
+				
+			});
 			
 		});
+			
 	    
 		btn_Remove_Book.setOnMouseClicked(e -> {			
 			my_Current_Library.removeABook(my_Current_Book);
@@ -456,6 +701,24 @@ public class LibraryDBMS_ver1 extends Application{
 	}
 	
 	
+
+	private void fillEditKeywordsList(ObservableList<String> keywords_data) {
+		keywords_data.clear();
+		ArrayList<String> list_Of_Keywords = my_Current_Edit_KeywordList;	
+	    for(int i = 0 ; i < list_Of_Keywords.size(); i++) {
+	    	keywords_data.add(list_Of_Keywords.get(i));
+	    }
+		
+	}
+
+	private void fillEditAuthorList(ObservableList<String> author_data) {
+		author_data.clear();
+		ArrayList<String> list_Of_Authors = my_Current_Edit_AuthorList;	
+	    for(int i = 0 ; i < list_Of_Authors.size(); i++) {
+	    	author_data.add(list_Of_Authors.get(i));
+	    }
+		
+	}
 
 	// Saves current library into file and loads it back from the file
 	private void saveData(File newLibraryFile) {
