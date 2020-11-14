@@ -133,6 +133,12 @@ public class LibraryDBMS_ver1 extends Application{
 	    btn_Add_Book.setLayoutY(380);
 		libraryPane.getChildren().add(btn_Add_Book);
 	    
+		Button btn_Edit_Book = new Button("Edit Book!");
+		btn_Edit_Book.setLayoutX(195);
+		btn_Edit_Book.setLayoutY(380);
+		btn_Edit_Book.setDisable(true);
+		libraryPane.getChildren().add(btn_Edit_Book);		
+		
 		Button btn_Remove_Book = new Button("Remove Book!");
 		btn_Remove_Book.setLayoutX(275);
 		btn_Remove_Book.setLayoutY(380);
@@ -141,22 +147,24 @@ public class LibraryDBMS_ver1 extends Application{
 	    
 		Label lbl_NumPagesShow = new Label("Number of Pages: ");
 		lbl_NumPagesShow.setLayoutX(80);
-		lbl_NumPagesShow.setLayoutY(420);
+		lbl_NumPagesShow.setLayoutY(440);
 		libraryPane.getChildren().add(lbl_NumPagesShow);
 		
 		Label lbl_ISBNShow = new Label("ISBN#: ");
 		lbl_ISBNShow.setLayoutX(80);
-		lbl_ISBNShow.setLayoutY(440);
+		lbl_ISBNShow.setLayoutY(460);
 		libraryPane.getChildren().add(lbl_ISBNShow);
 		
 		Label lbl_KeywordsShow = new Label("Keywords: ");
 		lbl_KeywordsShow.setLayoutX(80);
-		lbl_KeywordsShow.setLayoutY(460);
+		lbl_KeywordsShow.setLayoutY(480);
+		lbl_KeywordsShow.setMaxWidth(510);
+		lbl_KeywordsShow.setWrapText(true);
 		libraryPane.getChildren().add(lbl_KeywordsShow);
 		
 		Label lbl_DateShow = new Label("Date Added: ");
 		lbl_DateShow.setLayoutX(80);
-		lbl_DateShow.setLayoutY(480);
+		lbl_DateShow.setLayoutY(420);
 		libraryPane.getChildren().add(lbl_DateShow);
 		
 		listViewBooks.setOnMouseClicked(e -> {
@@ -164,6 +172,7 @@ public class LibraryDBMS_ver1 extends Application{
 	    	my_Current_Book = listViewBooks.getSelectionModel().getSelectedItem();
 	    	if (my_Current_Book!= null) {
 	    		btn_Remove_Book.setDisable(false);
+	    		btn_Edit_Book.setDisable(false);
 	    		lbl_NumPagesShow.setText("Number of Pages: " + my_Current_Book.getNumber_Of_Pages());
 	    		lbl_ISBNShow.setText("ISBN#: " + my_Current_Book.getISBN());
 	    		lbl_KeywordsShow.setText("Keywords: " + my_Current_Book.getKeywords());
@@ -171,6 +180,7 @@ public class LibraryDBMS_ver1 extends Application{
 	    	}
 	    	else {
 	    		btn_Remove_Book.setDisable(true);
+	    		btn_Edit_Book.setDisable(true);
 	    		lbl_NumPagesShow.setText("Number of Pages: ");
 	    		lbl_ISBNShow.setText("ISBN#: ");
 	    		lbl_KeywordsShow.setText("Keywords: ");
@@ -178,8 +188,6 @@ public class LibraryDBMS_ver1 extends Application{
 	    	}
 	    });
 	    
-		
-		
 		btn_Add_Book.setOnMouseClicked(e -> {
 			listViewBooks.setDisable(true);
 						
@@ -278,6 +286,8 @@ public class LibraryDBMS_ver1 extends Application{
 			primaryStage2.show();
 			
 			btn_Add_Book.setDisable(true);
+			btn_Edit_Book.setDisable(true);
+			btn_Remove_Book.setDisable(true);
 			
 			Label lbl_Volume = new Label("Volume: ");
 			lbl_Volume.setLayoutX(10);
@@ -365,7 +375,7 @@ public class LibraryDBMS_ver1 extends Application{
 		    		tf_Keywords.setText(my_Current_Keyword);
 		    	}
 		    	else {
-		    		btn_Remove.setDisable(true);
+		    		btn_RemoveKeyword.setDisable(true);
 		    	}
 		    });
 			
@@ -415,11 +425,20 @@ public class LibraryDBMS_ver1 extends Application{
 			});
 			
 		});
+		
+		btn_Edit_Book.setOnMouseClicked(e -> {
+			
+			
+			
+			
+		});
 	    
 		btn_Remove_Book.setOnMouseClicked(e -> {			
 			my_Current_Library.removeABook(my_Current_Book);
 			fillBookList(book_data);
 			listViewBooks.refresh();
+			btn_Remove_Book.setDisable(true);
+    		btn_Edit_Book.setDisable(true);
 		});
 	    	    
 		

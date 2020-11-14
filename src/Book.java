@@ -121,11 +121,11 @@ public class Book implements Comparable<Book>, Serializable {
 			authorsCommaSeparated += authors.get(authors.size() -1) + ".";
 		}
 		
-		if (volume == "" && edition == "")
+		if (volume.equals("") && edition.equals(""))
 			return  title + " by " + authorsCommaSeparated;
-		else if (volume != "" && edition == "")
+		else if (!volume.equals("") && edition.equals(""))
 			return title + " vol. " + volume + " by " + authorsCommaSeparated;
-		else if (volume == "" && edition != "")
+		else if (volume.equals("") && !edition.equals(""))
 			return title + " " + edition + "e by " + authorsCommaSeparated;
 		else {
 			return title + " vol. " + volume + " " + edition + "e by " + authorsCommaSeparated;
