@@ -5,4 +5,6 @@ Users can add books, view book information and remove books from the library.
 
 Details are saved permanently in main.library file.
 
+Future version will include additional features such as edit book, save as .txt file, etc.
+
 <img src="https://github.com/Vision-Paudel/LibraryDBMS/blob/main/LibraryDBMS_ver1.png" alt="Image could not be displayed">
