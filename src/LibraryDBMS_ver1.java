@@ -7,8 +7,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -127,7 +130,7 @@ public class LibraryDBMS_ver1 extends Application{
 	    ListView<Book> listViewBooks = new ListView<Book>(book_data);
 	    listViewBooks.setLayoutX(80);
 	    listViewBooks.setLayoutY(120);
-	    listViewBooks.setPrefSize(300, 250);
+	    listViewBooks.setPrefSize(450, 250);
 	    fillBookList(book_data);
 	    libraryPane.getChildren().add(listViewBooks);
 	    
@@ -147,6 +150,11 @@ public class LibraryDBMS_ver1 extends Application{
 		btn_Remove_Book.setLayoutY(380);
 		btn_Remove_Book.setDisable(true);
 		libraryPane.getChildren().add(btn_Remove_Book);
+		
+		Label lbl_NumBooks = new Label("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
+		lbl_NumBooks.setLayoutX(380);
+		lbl_NumBooks.setLayoutY(385);
+		libraryPane.getChildren().add(lbl_NumBooks);
 	    
 		Label lbl_NumPagesShow = new Label("Number of Pages: ");
 		lbl_NumPagesShow.setLayoutX(80);
@@ -169,28 +177,30 @@ public class LibraryDBMS_ver1 extends Application{
 		lbl_DateShow.setLayoutX(80);
 		lbl_DateShow.setLayoutY(420);
 		libraryPane.getChildren().add(lbl_DateShow);
-		
-		listViewBooks.setOnMouseClicked(e -> {
-			
-	    	my_Current_Book = listViewBooks.getSelectionModel().getSelectedItem();
-	    	if (my_Current_Book!= null) {
-	    		btn_Remove_Book.setDisable(false);
-	    		btn_Edit_Book.setDisable(false);
-	    		lbl_NumPagesShow.setText("Number of Pages: " + my_Current_Book.getNumber_Of_Pages());
-	    		lbl_ISBNShow.setText("ISBN#: " + my_Current_Book.getISBN());
-	    		lbl_KeywordsShow.setText("Keywords: " + my_Current_Book.getKeywords());
-	    		lbl_DateShow.setText("Date Added: " + my_Current_Book.getDateAdded());
-	    	}
-	    	else {
-	    		btn_Remove_Book.setDisable(true);
-	    		btn_Edit_Book.setDisable(true);
-	    		lbl_NumPagesShow.setText("Number of Pages: ");
-	    		lbl_ISBNShow.setText("ISBN#: ");
-	    		lbl_KeywordsShow.setText("Keywords: ");
-	    		lbl_DateShow.setText("Date Added: ");
-	    	}
-	    });
-	    
+				
+		listViewBooks.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Book>() {
+		    @Override
+		    public void changed(ObservableValue<? extends Book> observable, Book oldValue, Book newValue) {
+		    	my_Current_Book = newValue = listViewBooks.getSelectionModel().getSelectedItem();
+		    	if (my_Current_Book!= null) {
+		    		btn_Remove_Book.setDisable(false);
+		    		btn_Edit_Book.setDisable(false);
+		    		lbl_NumPagesShow.setText("Number of Pages: " + my_Current_Book.getNumber_Of_Pages());
+		    		lbl_ISBNShow.setText("ISBN#: " + my_Current_Book.getISBN());
+		    		lbl_KeywordsShow.setText("Keywords: " + my_Current_Book.getKeywords());
+		    		lbl_DateShow.setText("Date Added: " + my_Current_Book.getDateAdded());
+		    	}
+		    	else {
+		    		btn_Remove_Book.setDisable(true);
+		    		btn_Edit_Book.setDisable(true);
+		    		lbl_NumPagesShow.setText("Number of Pages: ");
+		    		lbl_ISBNShow.setText("ISBN#: ");
+		    		lbl_KeywordsShow.setText("Keywords: ");
+		    		lbl_DateShow.setText("Date Added: ");
+		    	}
+		    }
+		});
+			    
 		btn_Add_Book.setOnMouseClicked(e -> {
 			listViewBooks.setDisable(true);
 			lbl_DateShow.setText("Date Added: ");			
@@ -411,7 +421,7 @@ public class LibraryDBMS_ver1 extends Application{
 				listViewBooks.refresh();
 				btn_Add_Book.setDisable(false);
 				primaryStage2.close();
-				
+				lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 			});
 			
 			btn_Cancel.setOnMouseClicked(eCancel -> {
@@ -684,6 +694,7 @@ public class LibraryDBMS_ver1 extends Application{
 			listViewBooks.refresh();
 			btn_Remove_Book.setDisable(true);
     		btn_Edit_Book.setDisable(true);
+    		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
 	    	    
 		

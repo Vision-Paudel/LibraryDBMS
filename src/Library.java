@@ -34,7 +34,11 @@ public class Library implements Serializable{
 	public ArrayList<Book> getList_Of_Books() {
 		return list_Of_Books;
 	}
-
+	
+	public String getNum_Of_Books() {
+		return list_Of_Books.size() + "";
+	}
+	
 	public void setList_Of_Books(ArrayList<Book> list_Of_Books) {
 		Collections.sort(list_Of_Books);
 		this.list_Of_Books = list_Of_Books;
