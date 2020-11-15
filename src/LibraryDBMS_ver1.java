@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public class LibraryDBMS_ver1 extends Application{
@@ -120,6 +121,27 @@ public class LibraryDBMS_ver1 extends Application{
 					saveData(newLibraryFile);		
 			}
 		});
+		
+		Button btnSaveBackup = new Button("Backup Library Data");
+		btnSaveBackup.setLayoutX(380);
+		btnSaveBackup.setLayoutY(55);
+		libraryPane.getChildren().add(btnSaveBackup);
+		
+		btnSaveBackup.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+ 
+            //Set extension filter for text files
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Library files (*.library)", "*.library");
+            fileChooser.getExtensionFilters().add(extFilter);
+ 
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(primaryStage);
+ 
+            if (file != null) {
+                saveBackupToFile(file);
+            }
+        });
+		
 		
 		Label lbl_list_Of_Books = new Label("List of Books (Ctrl + click to deselect): ");
 		lbl_list_Of_Books.setLayoutX(80);
@@ -420,8 +442,9 @@ public class LibraryDBMS_ver1 extends Application{
 				fillBookList(book_data);
 				listViewBooks.refresh();
 				btn_Add_Book.setDisable(false);
-				primaryStage2.close();
 				lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
+				saveData(newLibraryFile);	
+				primaryStage2.close();
 			});
 			
 			btn_Cancel.setOnMouseClicked(eCancel -> {
@@ -668,6 +691,7 @@ public class LibraryDBMS_ver1 extends Application{
 				fillBookList(book_data);
 				listViewBooks.refresh();
 				btn_Add_Book.setDisable(false);
+				saveData(newLibraryFile);	
 				primaryStage2.close();
 				
 			});
@@ -694,6 +718,7 @@ public class LibraryDBMS_ver1 extends Application{
 			listViewBooks.refresh();
 			btn_Remove_Book.setDisable(true);
     		btn_Edit_Book.setDisable(true);
+    		saveData(newLibraryFile);	
     		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
 	    	    
@@ -712,6 +737,19 @@ public class LibraryDBMS_ver1 extends Application{
 	}
 	
 	
+
+	private void saveBackupToFile(File file) {
+		try {
+			fout = new FileOutputStream(file);
+			oos = new ObjectOutputStream(fout);
+			oos.writeObject(my_Current_Library);		
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}finally {
+			closeInputOutput();
+		}
+	}
+		
 
 	private void fillEditKeywordsList(ObservableList<String> keywords_data) {
 		keywords_data.clear();
