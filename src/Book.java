@@ -93,10 +93,17 @@ public class Book implements Comparable<Book>, Serializable {
 
 	public void setKeywords(ArrayList<String> keywords) {
 		this.keywords = keywords;
+		Collections.sort(this.keywords);
 	}
 	
 	public void addKeyword(String keyword) {
 		keywords.add(keyword);
+		Collections.sort(keywords);
+	}
+	
+	public void removeKeyword(String keyword) {
+		keywords.remove(keyword);
+		Collections.sort(keywords);
 	}
 	
 	public void removeAllKeywords() {
@@ -126,9 +133,9 @@ public class Book implements Comparable<Book>, Serializable {
 		else if (!volume.equals("") && edition.equals(""))
 			return title + " vol. " + volume + " by " + authorsCommaSeparated;
 		else if (volume.equals("") && !edition.equals(""))
-			return title + " " + edition + "e by " + authorsCommaSeparated;
+			return title + " " + edition + " edition by " + authorsCommaSeparated;
 		else {
-			return title + " vol. " + volume + " " + edition + "e by " + authorsCommaSeparated;
+			return title + " vol. " + volume + " " + edition + " edition by " + authorsCommaSeparated;
 		}
 	}
 	
