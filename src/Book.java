@@ -34,7 +34,7 @@ public class Book implements Comparable<Book>, Serializable {
 
 	public void setAuthors(ArrayList<String> authors) {
 		this.authors = authors;
-		Collections.sort(authors);
+		Collections.sort(this.authors);
 	}
 	
 	public void addAuthor(String author) {
@@ -137,6 +137,14 @@ public class Book implements Comparable<Book>, Serializable {
 		else {
 			return title + " vol. " + volume + " " + edition + " edition by " + authorsCommaSeparated;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(o!= null)
+			return (this.ISBN + this.toString()).equals( "" + ((Book)o).getISBN() + ((Book)o).toString()) ;
+		else
+			return false;
 	}
 	
 	@Override

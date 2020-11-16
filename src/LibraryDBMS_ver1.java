@@ -18,6 +18,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Reflection;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -122,7 +124,12 @@ public class LibraryDBMS_ver1 extends Application{
 			}
 		});
 		
-		Button btnSaveBackup = new Button("Backup Library Data");
+		Image imageSaveBackup = new Image("/img/save_all.png");
+        ImageView imageViewSaveBackup = new ImageView(imageSaveBackup);
+        Image imageSave = new Image("/img/save.png");
+        ImageView imageViewSave = new ImageView(imageSave);
+		
+		Button btnSaveBackup = new Button("Backup Library Data", imageViewSaveBackup);
 		btnSaveBackup.setLayoutX(380);
 		btnSaveBackup.setLayoutY(55);
 		libraryPane.getChildren().add(btnSaveBackup);
@@ -199,11 +206,31 @@ public class LibraryDBMS_ver1 extends Application{
 		lbl_DateShow.setLayoutX(80);
 		lbl_DateShow.setLayoutY(420);
 		libraryPane.getChildren().add(lbl_DateShow);
-				
+		
+		listViewBooks.setOnMouseClicked(e ->{
+			my_Current_Book = listViewBooks.getSelectionModel().getSelectedItem();
+	    	if (my_Current_Book!= null) {
+	    		btn_Remove_Book.setDisable(false);
+	    		btn_Edit_Book.setDisable(false);
+	    		lbl_NumPagesShow.setText("Number of Pages: " + my_Current_Book.getNumber_Of_Pages());
+	    		lbl_ISBNShow.setText("ISBN#: " + my_Current_Book.getISBN());
+	    		lbl_KeywordsShow.setText("Keywords: " + my_Current_Book.getKeywords());
+	    		lbl_DateShow.setText("Date Added: " + my_Current_Book.getDateAdded());
+	    	}
+	    	else {
+	    		btn_Remove_Book.setDisable(true);
+	    		btn_Edit_Book.setDisable(true);
+	    		lbl_NumPagesShow.setText("Number of Pages: ");
+	    		lbl_ISBNShow.setText("ISBN#: ");
+	    		lbl_KeywordsShow.setText("Keywords: ");
+	    		lbl_DateShow.setText("Date Added: ");
+	    	}
+		});
+		
 		listViewBooks.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Book>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Book> observable, Book oldValue, Book newValue) {
-		    	my_Current_Book = newValue = listViewBooks.getSelectionModel().getSelectedItem();
+		    	my_Current_Book = newValue;
 		    	if (my_Current_Book!= null) {
 		    		btn_Remove_Book.setDisable(false);
 		    		btn_Edit_Book.setDisable(false);
@@ -302,7 +329,7 @@ public class LibraryDBMS_ver1 extends Application{
 				tf_Author.setText("");
 			});
 			
-			Button btn_Save = new Button("Save!");
+			Button btn_Save = new Button("Save!", imageViewSave);
 			btn_Save.setLayoutX(275);
 			btn_Save.setLayoutY(380);
 			addABookPane.getChildren().add(btn_Save);
@@ -544,7 +571,7 @@ public class LibraryDBMS_ver1 extends Application{
 				tf_Author.setText("");
 			});
 			
-			Button btn_Save = new Button("Save!");
+			Button btn_Save = new Button("Save!", imageViewSave);
 			btn_Save.setLayoutX(275);
 			btn_Save.setLayoutY(380);
 			addABookPane.getChildren().add(btn_Save);
@@ -679,7 +706,7 @@ public class LibraryDBMS_ver1 extends Application{
 			});
 			
 			btn_Save.setOnMouseClicked(eSave -> {
-				
+				my_Current_Library.removeABook(my_Current_Book);
 				my_Current_Book.setTitle(tf_Book_Title.getText());
 				my_Current_Book.setVolume(tf_Volume.getText());
 				my_Current_Book.setEdition(tf_Edition.getText());
@@ -687,6 +714,7 @@ public class LibraryDBMS_ver1 extends Application{
 				my_Current_Book.setISBN(tf_ISBN.getText());
 				my_Current_Book.setAuthors(my_Current_Edit_AuthorList);
 				my_Current_Book.setKeywords(my_Current_Edit_KeywordList);
+				my_Current_Library.addABook(my_Current_Book);
 				listViewBooks.setDisable(false);
 				fillBookList(book_data);
 				listViewBooks.refresh();
@@ -710,8 +738,7 @@ public class LibraryDBMS_ver1 extends Application{
 			});
 			
 		});
-			
-	    
+				    
 		btn_Remove_Book.setOnMouseClicked(e -> {			
 			my_Current_Library.removeABook(my_Current_Book);
 			fillBookList(book_data);
@@ -721,9 +748,7 @@ public class LibraryDBMS_ver1 extends Application{
     		saveData(newLibraryFile);	
     		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
-	    	    
-		
-		
+	    	  		
 		Scene mainScene = new Scene(mainPane, 600, 600);
 		primaryStage.setTitle("Library Database Management System version 1.0");
 		primaryStage.setScene(mainScene);
