@@ -1,5 +1,5 @@
 # Library Database Management System
-Version 1 Features
+Version 1.1 Features
 
 Users can add books, view and edit book information and remove books from the library.
 
