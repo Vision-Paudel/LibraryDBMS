@@ -300,9 +300,9 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Add.setLayoutY(100);
 			addABookPane.getChildren().add(btn_Add);
 			
-			Button btn_Remove = new Button("Clear");
+			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
-			btn_Remove.setLayoutX(240);
+			btn_Remove.setLayoutX(235);
 			btn_Remove.setLayoutY(100);
 			addABookPane.getChildren().add(btn_Remove);
 		    
@@ -332,6 +332,7 @@ public class LibraryDBMS_ver1 extends Application{
 				fillAuthorList(author_data);
 				listViewBooks.refresh();
 				tf_Author.setText("");
+				btn_Remove.setDisable(true);
 			});
 			
 			Button btn_Save = new Button("Save!", imageViewSave);
@@ -344,7 +345,7 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Cancel.setLayoutY(380);
 			addABookPane.getChildren().add(btn_Cancel);
 			
-			Scene addABookScene = new Scene(addABookPane, 350, 420);
+			Scene addABookScene = new Scene(addABookPane, 380, 435);
 			Stage primaryStage2 = new Stage();
 						
 			primaryStage2.setTitle("Add a Book");
@@ -428,9 +429,9 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_AddKeyword.setLayoutY(330);
 			addABookPane.getChildren().add(btn_AddKeyword);
 			
-			Button btn_RemoveKeyword = new Button("Clear");
+			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
-			btn_RemoveKeyword.setLayoutX(240);
+			btn_RemoveKeyword.setLayoutX(235);
 			btn_RemoveKeyword.setLayoutY(330);
 			addABookPane.getChildren().add(btn_RemoveKeyword);
 			
@@ -460,6 +461,7 @@ public class LibraryDBMS_ver1 extends Application{
 				fillKeywordsList(keywords_data);
 				listViewKeywords.refresh();
 				tf_Keywords.setText("");
+				btn_RemoveKeyword.setDisable(true);
 			});
 			
 			btn_Save.setOnMouseClicked(eSave -> {
@@ -504,24 +506,24 @@ public class LibraryDBMS_ver1 extends Application{
     		lbl_ISBNShow.setText("ISBN#: ");
     		lbl_KeywordsShow.setText("Keywords: ");
 			
-			Pane addABookPane = new Pane();	
+			Pane editBookPane = new Pane();	
 			
 			Label lbl_Book_Title = new Label("Book Title: ");
 			lbl_Book_Title.setLayoutX(10);
 			lbl_Book_Title.setLayoutY(10);
-			addABookPane.getChildren().add(lbl_Book_Title);
+			editBookPane.getChildren().add(lbl_Book_Title);
 			
 			TextField tf_Book_Title = new TextField();
 			tf_Book_Title.setText(my_Current_Book.getTitle());
 			tf_Book_Title.setLayoutX(70);
 			tf_Book_Title.setLayoutY(10);
 			tf_Book_Title.setEditable(true);
-			addABookPane.getChildren().add(tf_Book_Title);	
+			editBookPane.getChildren().add(tf_Book_Title);	
 			
 			Label lbl_Authors = new Label("Authors: ");
 			lbl_Authors.setLayoutX(10);
 			lbl_Authors.setLayoutY(40);
-			addABookPane.getChildren().add(lbl_Authors);
+			editBookPane.getChildren().add(lbl_Authors);
 			
 			ObservableList<String> author_data = FXCollections.observableArrayList();
 		    ListView<String> listViewAuthors = new ListView<String>(author_data);
@@ -529,24 +531,24 @@ public class LibraryDBMS_ver1 extends Application{
 		    listViewAuthors.setLayoutY(60);
 		    listViewAuthors.setPrefSize(150, 80);
 		    fillAuthorList(author_data);
-		    addABookPane.getChildren().add(listViewAuthors);
+		    editBookPane.getChildren().add(listViewAuthors);
 		    
 		    TextField tf_Author = new TextField();
 		    tf_Author.setLayoutX(165);
 		    tf_Author.setLayoutY(60);
 		    tf_Author.setEditable(true);
-			addABookPane.getChildren().add(tf_Author);	
+			editBookPane.getChildren().add(tf_Author);	
 			
 			Button btn_Add = new Button("Add!");
 			btn_Add.setLayoutX(180);
 			btn_Add.setLayoutY(100);
-			addABookPane.getChildren().add(btn_Add);
+			editBookPane.getChildren().add(btn_Add);
 			
-			Button btn_Remove = new Button("Clear");
+			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
-			btn_Remove.setLayoutX(240);
+			btn_Remove.setLayoutX(235);
 			btn_Remove.setLayoutY(100);
-			addABookPane.getChildren().add(btn_Remove);
+			editBookPane.getChildren().add(btn_Remove);
 		    
 			my_Current_Edit_AuthorList = (ArrayList<String>)(my_Current_Book.getAuthors()).clone();
 			
@@ -576,23 +578,24 @@ public class LibraryDBMS_ver1 extends Application{
 				fillEditAuthorList(author_data);
 				listViewBooks.refresh();
 				tf_Author.setText("");
+				btn_Remove.setDisable(true);
 			});
 			
 			Button btn_Save = new Button("Save!", imageViewSave);
 			btn_Save.setLayoutX(275);
 			btn_Save.setLayoutY(380);
-			addABookPane.getChildren().add(btn_Save);
+			editBookPane.getChildren().add(btn_Save);
 			
 			Button btn_Cancel = new Button("Cancel");
 			btn_Cancel.setLayoutX(200);
 			btn_Cancel.setLayoutY(380);
-			addABookPane.getChildren().add(btn_Cancel);
+			editBookPane.getChildren().add(btn_Cancel);
 			
-			Scene addABookScene = new Scene(addABookPane, 350, 420);
+			Scene editBookScene = new Scene(editBookPane, 380, 425);
 			Stage primaryStage2 = new Stage();
 						
 			primaryStage2.setTitle("Edit Book");
-			primaryStage2.setScene(addABookScene);
+			primaryStage2.setScene(editBookScene);
 			primaryStage2.setResizable(false);
 			primaryStage2.show();
 			
@@ -603,7 +606,7 @@ public class LibraryDBMS_ver1 extends Application{
 			Label lbl_Volume = new Label("Volume: ");
 			lbl_Volume.setLayoutX(10);
 			lbl_Volume.setLayoutY(150);
-			addABookPane.getChildren().add(lbl_Volume);
+			editBookPane.getChildren().add(lbl_Volume);
 			
 			TextField tf_Volume = new TextField();
 			tf_Volume.setText(my_Current_Book.getVolume());
@@ -611,12 +614,12 @@ public class LibraryDBMS_ver1 extends Application{
 			tf_Volume.setLayoutY(150);
 			tf_Volume.setMaxWidth(110);
 			tf_Volume.setEditable(true);
-			addABookPane.getChildren().add(tf_Volume);
+			editBookPane.getChildren().add(tf_Volume);
 			
 			Label lbl_Edition = new Label("Edition: ");
 			lbl_Edition.setLayoutX(10);
 			lbl_Edition.setLayoutY(180);
-			addABookPane.getChildren().add(lbl_Edition);
+			editBookPane.getChildren().add(lbl_Edition);
 			
 			TextField tf_Edition = new TextField();
 			tf_Edition.setText(my_Current_Book.getEdition());
@@ -624,12 +627,12 @@ public class LibraryDBMS_ver1 extends Application{
 			tf_Edition.setLayoutY(180);
 			tf_Edition.setMaxWidth(110);
 			tf_Edition.setEditable(true);
-			addABookPane.getChildren().add(tf_Edition);
+			editBookPane.getChildren().add(tf_Edition);
 			
 			Label lbl_NumPages = new Label("Number of Pages: ");
 			lbl_NumPages.setLayoutX(10);
 			lbl_NumPages.setLayoutY(210);
-			addABookPane.getChildren().add(lbl_NumPages);
+			editBookPane.getChildren().add(lbl_NumPages);
 			
 			TextField tf_NumPages = new TextField();
 			tf_NumPages.setText(my_Current_Book.getNumber_Of_Pages());
@@ -637,12 +640,12 @@ public class LibraryDBMS_ver1 extends Application{
 			tf_NumPages.setLayoutY(210);
 			tf_NumPages.setEditable(true);
 			tf_NumPages.setMaxWidth(110);
-			addABookPane.getChildren().add(tf_NumPages);
+			editBookPane.getChildren().add(tf_NumPages);
 			
 			Label lbl_ISBN = new Label("ISBN#: ");
 			lbl_ISBN.setLayoutX(10);
 			lbl_ISBN.setLayoutY(240);
-			addABookPane.getChildren().add(lbl_ISBN);
+			editBookPane.getChildren().add(lbl_ISBN);
 			
 			TextField tf_ISBN = new TextField();
 			tf_ISBN.setText(my_Current_Book.getISBN());
@@ -650,12 +653,12 @@ public class LibraryDBMS_ver1 extends Application{
 			tf_ISBN.setLayoutY(240);
 			tf_ISBN.setEditable(true);
 			tf_ISBN.setMaxWidth(110);
-			addABookPane.getChildren().add(tf_ISBN);
+			editBookPane.getChildren().add(tf_ISBN);
 						
 			Label lbl_Keywords = new Label("Keywords: ");
 			lbl_Keywords.setLayoutX(10);
 			lbl_Keywords.setLayoutY(270);
-			addABookPane.getChildren().add(lbl_Keywords);
+			editBookPane.getChildren().add(lbl_Keywords);
 			
 			my_Current_Edit_KeywordList = (ArrayList<String>)(my_Current_Book.getKeywords()).clone();
 			
@@ -665,24 +668,24 @@ public class LibraryDBMS_ver1 extends Application{
 		    listViewKeywords.setLayoutY(290);
 		    listViewKeywords.setPrefSize(150, 80);
 		    fillKeywordsList(keywords_data);
-		    addABookPane.getChildren().add(listViewKeywords);
+		    editBookPane.getChildren().add(listViewKeywords);
 		    
 		    TextField tf_Keywords = new TextField();
 		    tf_Keywords.setLayoutX(165);
 		    tf_Keywords.setLayoutY(290);
 		    tf_Keywords.setEditable(true);
-			addABookPane.getChildren().add(tf_Keywords);	
+			editBookPane.getChildren().add(tf_Keywords);	
 			
 			Button btn_AddKeyword = new Button("Add!");
 			btn_AddKeyword.setLayoutX(180);
 			btn_AddKeyword.setLayoutY(330);
-			addABookPane.getChildren().add(btn_AddKeyword);
+			editBookPane.getChildren().add(btn_AddKeyword);
 			
-			Button btn_RemoveKeyword = new Button("Clear");
+			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
-			btn_RemoveKeyword.setLayoutX(240);
+			btn_RemoveKeyword.setLayoutX(235);
 			btn_RemoveKeyword.setLayoutY(330);
-			addABookPane.getChildren().add(btn_RemoveKeyword);
+			editBookPane.getChildren().add(btn_RemoveKeyword);
 			
 			listViewKeywords.setOnMouseClicked(elistViewKeywords -> {
 				
@@ -710,6 +713,7 @@ public class LibraryDBMS_ver1 extends Application{
 				fillEditKeywordsList(keywords_data);
 				listViewKeywords.refresh();
 				tf_Keywords.setText("");
+				btn_RemoveKeyword.setDisable(true);
 			});
 			
 			btn_Save.setOnMouseClicked(eSave -> {
