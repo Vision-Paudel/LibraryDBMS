@@ -11,7 +11,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -32,6 +31,7 @@ import javafx.stage.Stage;
 
 public class LibraryDBMS_ver1 extends Application{
 
+	// Static data fields
 	private static Library my_Current_Library = new Library("");
 	private static Book my_Current_Book = new Book("");
 	private static String my_Current_Author = "";
@@ -44,6 +44,7 @@ public class LibraryDBMS_ver1 extends Application{
 	private static ArrayList<String> my_Current_Edit_AuthorList = new ArrayList<String>();
 	private static ArrayList<String> my_Current_Edit_KeywordList = new ArrayList<String>();
 	
+	// Launch Application
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -88,7 +89,9 @@ public class LibraryDBMS_ver1 extends Application{
 				closeInputOutput();
 			}
 		}
-				
+		
+		// Main Pane
+		
 		Label lbl_library_Name = new Label("Library Name:");
 		lbl_library_Name.setLayoutX(80);
 		lbl_library_Name.setLayoutY(55);
@@ -249,7 +252,9 @@ public class LibraryDBMS_ver1 extends Application{
 		    	}
 		    }
 		});
-			    
+		
+		// Adding a Book
+		
 		btn_Add_Book.setOnMouseClicked(e -> {
 			listViewBooks.setDisable(true);
 			lbl_DateShow.setText("Date Added: ");			
@@ -488,6 +493,8 @@ public class LibraryDBMS_ver1 extends Application{
 			});
 			
 		});
+		
+		// Editing Book
 		
 		btn_Edit_Book.setOnMouseClicked(e -> {
 			
@@ -738,7 +745,9 @@ public class LibraryDBMS_ver1 extends Application{
 			});
 			
 		});
-				    
+		
+		//Removing Book
+		
 		btn_Remove_Book.setOnMouseClicked(e -> {			
 			my_Current_Library.removeABook(my_Current_Book);
 			fillBookList(book_data);
@@ -748,13 +757,16 @@ public class LibraryDBMS_ver1 extends Application{
     		saveData(newLibraryFile);	
     		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
-	    	  		
-		Scene mainScene = new Scene(mainPane, 600, 600);
-		primaryStage.setTitle("Library Database Management System version 1.0");
-		primaryStage.setScene(mainScene);
-		primaryStage.setResizable(false);
-		primaryStage.show();
+	    
 		
+		
+		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
+		primaryStage.setTitle("Library Database Management System version 1.0 by Vision Paudel");	// Set title
+		primaryStage.setScene(mainScene);															// Set scene unto stage
+		primaryStage.setResizable(false);															// Disable window resizing
+		primaryStage.show();																		// Display the stage
+		
+		//Save on Exit		
 		primaryStage.setOnCloseRequest(event -> {
 			saveData(newLibraryFile);
 		});
@@ -762,7 +774,7 @@ public class LibraryDBMS_ver1 extends Application{
 	}
 	
 	
-
+	// Saving Backup File
 	private void saveBackupToFile(File file) {
 		try {
 			fout = new FileOutputStream(file);
@@ -775,7 +787,7 @@ public class LibraryDBMS_ver1 extends Application{
 		}
 	}
 		
-
+	// Updating Keywords during Editing of Book
 	private void fillEditKeywordsList(ObservableList<String> keywords_data) {
 		keywords_data.clear();
 		ArrayList<String> list_Of_Keywords = my_Current_Edit_KeywordList;	
@@ -784,7 +796,8 @@ public class LibraryDBMS_ver1 extends Application{
 	    }
 		
 	}
-
+	
+	// Updating Authors during Editing of Book
 	private void fillEditAuthorList(ObservableList<String> author_data) {
 		author_data.clear();
 		ArrayList<String> list_Of_Authors = my_Current_Edit_AuthorList;	
@@ -864,7 +877,7 @@ public class LibraryDBMS_ver1 extends Application{
 	    }
 	}
 	
-	// Fills the book list
+	// Fills/ updates the book list
 	private void fillBookList(ObservableList<Book> data) {
 		data.clear();
 		ArrayList<Book> list_Of_Books = my_Current_Library.getList_Of_Books();		
