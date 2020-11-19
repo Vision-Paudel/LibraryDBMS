@@ -4,6 +4,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -101,6 +102,26 @@ public class LibraryDBMS_ver1 extends Application{
 		lbl_date_Created.setLayoutX(80);
 		lbl_date_Created.setLayoutY(85);
 		libraryPane.getChildren().add(lbl_date_Created);
+		
+		Button exportToTxT = new Button("Export to .txt file");
+		exportToTxT.setLayoutX(423);
+		exportToTxT.setLayoutY(85);
+		libraryPane.getChildren().add(exportToTxT);
+		
+		exportToTxT.setOnAction(e -> {
+            FileChooser fileChooser = new FileChooser();
+ 
+            //Set extension filter for text files
+            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+            fileChooser.getExtensionFilters().add(extFilter);
+ 
+            //Show save file dialog
+            File file = fileChooser.showSaveDialog(primaryStage);
+ 
+            if (file != null) {
+            	saveTextFile(file);
+            }
+        });
 		
 		TextField tf_Library_Name = new TextField();
 		tf_Library_Name.setLayoutX(160);
@@ -765,7 +786,7 @@ public class LibraryDBMS_ver1 extends Application{
 		
 		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 1.1 by Vision Paudel");	// Set title
+		primaryStage.setTitle("Library Database Management System version 1.5 by Vision Paudel");	// Set title
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
@@ -777,7 +798,30 @@ public class LibraryDBMS_ver1 extends Application{
 			
 	}
 	
-	
+	// Saving .txt file
+	private void saveTextFile(File file) {
+		PrintWriter newWriter;
+		try {
+			newWriter = new PrintWriter(file);
+			
+			ArrayList<Book> listOfBooks = my_Current_Library.getList_Of_Books();
+			newWriter.println("Total number of books: " + listOfBooks.size());
+			newWriter.println();
+			for(int i = 0 ; i < listOfBooks.size(); i++) {
+				newWriter.println((i+1) + ". " + listOfBooks.get(i));
+				newWriter.println("Number of Pages: " + listOfBooks.get(i).getNumber_Of_Pages());
+				newWriter.println("ISBN#: " + listOfBooks.get(i).getISBN());
+				newWriter.println("Keywords: " + listOfBooks.get(i).getKeywords());
+				newWriter.println("Date Added: " + listOfBooks.get(i).getDateAdded());
+				newWriter.println();
+			}
+			
+			newWriter.close();
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}		
+	}
+
 	// Saving Backup File
 	private void saveBackupToFile(File file) {
 		try {
