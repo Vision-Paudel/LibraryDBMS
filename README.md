@@ -3,7 +3,7 @@ Version 1.5 Features
 
 Users can add books, view and edit book information and remove books from the library.
 
-Details are saved permanently in main.library file.
+Has good interface. Details are saved permanently in main.library file.
 
 <img src="https://github.com/Vision-Paudel/LibraryDBMS/blob/main/LibraryDBMS_ver1.5.png" alt="Image could not be displayed">
 
