@@ -936,7 +936,7 @@ public class LibraryDBMS_ver1 extends Application{
 		
 		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 1.5 by Vision Paudel");	// Set title
+		primaryStage.setTitle("Library Database Management System version 1.9 by Vision Paudel");	// Set title
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
