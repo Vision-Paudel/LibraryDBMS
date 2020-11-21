@@ -13,10 +13,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -44,6 +47,22 @@ public class LibraryDBMS_ver1 extends Application{
 	
 	private static ArrayList<String> my_Current_Edit_AuthorList = new ArrayList<String>();
 	private static ArrayList<String> my_Current_Edit_KeywordList = new ArrayList<String>();
+	
+	static ComboBox<String> cbExportMenu = new ComboBox<>();
+	static String[] exportMenuArray = new String[] { "Export to" , ".txt file" , ".csv file (format 1)" , ".csv file (format 2)" };
+	static ObservableList<String> exportItemsList = FXCollections.observableArrayList(exportMenuArray);
+	static int indexOfExport = 0;
+	
+	static ComboBox<String> cbThemeMenu = new ComboBox<>();
+	static String[] themeMenuArray = new String[] { "Red" , "Green" , "Blue" , "Black" };
+	static ObservableList<String> themeItemsList = FXCollections.observableArrayList(themeMenuArray);
+	static int indexOfTheme = 1;
+		
+	final static String[] IDLE_BUTTON_STYLES = {"-fx-background-color: transparent; -fx-border-color: red", "-fx-background-color: transparent; -fx-border-color: green" , "-fx-background-color: transparent; -fx-border-color: blue" , "-fx-background-color: transparent; -fx-border-color: black" };
+	final static String[] HOVERED_BUTTON_STYLES = { "-fx-background-color: red; -fx-text-fill: white;", "-fx-background-color: green; -fx-text-fill: white;", "-fx-background-color: blue; -fx-text-fill: white;", "-fx-background-color: black; -fx-text-fill: white;" };
+	static int styleIndex = 1;
+	static String IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
+	static String HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
 	
 	// Launch Application
 	public static void main(String[] args) {
@@ -103,25 +122,103 @@ public class LibraryDBMS_ver1 extends Application{
 		lbl_date_Created.setLayoutY(85);
 		libraryPane.getChildren().add(lbl_date_Created);
 		
-		Button exportToTxT = new Button("Export to .txt file");
-		exportToTxT.setLayoutX(423);
-		exportToTxT.setLayoutY(85);
-		libraryPane.getChildren().add(exportToTxT);
+		Button exportToFile = new Button("Export to File(s)");
+		exportToFile.setLayoutX(423);
+		exportToFile.setLayoutY(85);
+		libraryPane.getChildren().add(exportToFile);
 		
-		exportToTxT.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
- 
-            //Set extension filter for text files
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
-            fileChooser.getExtensionFilters().add(extFilter);
- 
-            //Show save file dialog
-            File file = fileChooser.showSaveDialog(primaryStage);
- 
-            if (file != null) {
-            	saveTextFile(file);
-            }
+		exportToFile.setStyle(IDLE_BUTTON_STYLE);
+		exportToFile.setOnMouseEntered(e -> exportToFile.setStyle(HOVERED_BUTTON_STYLE));
+		exportToFile.setOnMouseExited(e -> exportToFile.setStyle(IDLE_BUTTON_STYLE));
+		
+		cbExportMenu.getItems().addAll(exportItemsList);
+		
+		exportToFile.setOnAction(e -> {
+			
+			Pane exportToFilePane = new Pane();	
+			
+			Scene exportToFileScene = new Scene(exportToFilePane, 250, 100);
+			Stage primaryStage2 = new Stage();
+			
+			primaryStage2.setTitle("Export to File(s)");
+			primaryStage2.setScene(exportToFileScene);
+			primaryStage2.setResizable(false);
+			primaryStage2.show();
+								
+			cbExportMenu.setValue("Export to");
+			cbExportMenu.setLayoutX(10);
+			cbExportMenu.setLayoutY(10);
+			exportToFilePane.getChildren().add(cbExportMenu);
+			
+			Button exportToFile2 = new Button("Export!");
+			exportToFile2.setLayoutX(10);
+			exportToFile2.setLayoutY(40);
+			exportToFilePane.getChildren().add(exportToFile2);
+			exportToFile2.setStyle(IDLE_BUTTON_STYLE);
+			exportToFile2.setOnMouseEntered(ex -> exportToFile2.setStyle(HOVERED_BUTTON_STYLE));
+			exportToFile2.setOnMouseExited(ex -> exportToFile2.setStyle(IDLE_BUTTON_STYLE));
+			
+			cbExportMenu.setOnAction ( ex -> {
+				indexOfExport = exportItemsList.indexOf(cbExportMenu.getValue());
+			});
+			
+			exportToFile2.setOnAction(ex -> {
+			
+				if(indexOfExport == 0) {
+					
+					// Do nothing for now.
+					
+				}else if (indexOfExport == 1) {
+					FileChooser fileChooser = new FileChooser();
+		 
+		            //Set extension filter for text files
+		            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+		            fileChooser.getExtensionFilters().add(extFilter);
+		 
+		            //Show save file dialog
+		            File file = fileChooser.showSaveDialog(primaryStage2);
+		 
+		            if (file != null) {
+		            	saveTextFile(file);
+		            }
+				}
+				else if (indexOfExport == 2 || indexOfExport == 3) {
+					
+					Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+					confirmationAlert.setHeaderText("Commas will be Removed!");
+					confirmationAlert.setContentText("All Commas will be replaced with ' ' (Whitespace character).");
+					confirmationAlert.showAndWait();
+					
+					FileChooser fileChooser = new FileChooser();
+					 
+		            //Set extension filter for text files
+		            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Comma delimited (*.csv)", "*.csv");
+		            fileChooser.getExtensionFilters().add(extFilter);
+		 
+		            //Show save file dialog
+		            File file = fileChooser.showSaveDialog(primaryStage2);
+		 
+		            if (file != null) {
+		            	saveCSVFile(file);
+		            }
+				}
+			
+			});
+            
         });
+		
+		cbThemeMenu.getItems().addAll(themeItemsList);
+		cbThemeMenu.setValue("Theme");
+		cbThemeMenu.setOnAction ( ex -> {
+			indexOfTheme = themeItemsList.indexOf(cbThemeMenu.getValue());
+			styleIndex = indexOfTheme;
+			IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
+			HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
+			mainPane.setTop(getTitle());			
+		});
+		cbThemeMenu.setLayoutX(440);
+		cbThemeMenu.setLayoutY(20);
+		libraryPane.getChildren().add(cbThemeMenu);
 		
 		TextField tf_Library_Name = new TextField();
 		tf_Library_Name.setLayoutX(160);
@@ -134,6 +231,10 @@ public class LibraryDBMS_ver1 extends Application{
 		btn_Change_Library_Name.setLayoutX(310);
 		btn_Change_Library_Name.setLayoutY(55);
 		libraryPane.getChildren().add(btn_Change_Library_Name);
+		btn_Change_Library_Name.setStyle(IDLE_BUTTON_STYLE);
+		btn_Change_Library_Name.setOnMouseEntered(e -> btn_Change_Library_Name.setStyle(HOVERED_BUTTON_STYLE));
+		btn_Change_Library_Name.setOnMouseExited(e -> btn_Change_Library_Name.setStyle(IDLE_BUTTON_STYLE));
+		
 		
 		btn_Change_Library_Name.setOnMouseClicked(e -> {
 			if (btn_Change_Library_Name.getText().equals("Change")) {
@@ -157,6 +258,10 @@ public class LibraryDBMS_ver1 extends Application{
 		btnSaveBackup.setLayoutX(380);
 		btnSaveBackup.setLayoutY(55);
 		libraryPane.getChildren().add(btnSaveBackup);
+		
+		btnSaveBackup.setStyle(IDLE_BUTTON_STYLE);
+		btnSaveBackup.setOnMouseEntered(e -> btnSaveBackup.setStyle(HOVERED_BUTTON_STYLE));
+		btnSaveBackup.setOnMouseExited(e -> btnSaveBackup.setStyle(IDLE_BUTTON_STYLE));
 		
 		btnSaveBackup.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
@@ -191,18 +296,27 @@ public class LibraryDBMS_ver1 extends Application{
 	    btn_Add_Book.setLayoutX(100);
 	    btn_Add_Book.setLayoutY(380);
 		libraryPane.getChildren().add(btn_Add_Book);
-	    
+		btn_Add_Book.setStyle(IDLE_BUTTON_STYLE);
+		btn_Add_Book.setOnMouseEntered(e -> btn_Add_Book.setStyle(HOVERED_BUTTON_STYLE));
+		btn_Add_Book.setOnMouseExited(e -> btn_Add_Book.setStyle(IDLE_BUTTON_STYLE));
+		
 		Button btn_Edit_Book = new Button("Edit Book!");
 		btn_Edit_Book.setLayoutX(195);
 		btn_Edit_Book.setLayoutY(380);
 		btn_Edit_Book.setDisable(true);
-		libraryPane.getChildren().add(btn_Edit_Book);		
+		libraryPane.getChildren().add(btn_Edit_Book);
+		btn_Edit_Book.setStyle(IDLE_BUTTON_STYLE);
+		btn_Edit_Book.setOnMouseEntered(e -> btn_Edit_Book.setStyle(HOVERED_BUTTON_STYLE));
+		btn_Edit_Book.setOnMouseExited(e -> btn_Edit_Book.setStyle(IDLE_BUTTON_STYLE));
 		
 		Button btn_Remove_Book = new Button("Remove Book!");
 		btn_Remove_Book.setLayoutX(275);
 		btn_Remove_Book.setLayoutY(380);
 		btn_Remove_Book.setDisable(true);
 		libraryPane.getChildren().add(btn_Remove_Book);
+		btn_Remove_Book.setStyle(IDLE_BUTTON_STYLE);
+		btn_Remove_Book.setOnMouseEntered(e -> btn_Remove_Book.setStyle(HOVERED_BUTTON_STYLE));
+		btn_Remove_Book.setOnMouseExited(e -> btn_Remove_Book.setStyle(IDLE_BUTTON_STYLE));
 		
 		Label lbl_NumBooks = new Label("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		lbl_NumBooks.setLayoutX(380);
@@ -320,12 +434,18 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Add.setLayoutX(180);
 			btn_Add.setLayoutY(100);
 			addABookPane.getChildren().add(btn_Add);
+			btn_Add.setStyle(IDLE_BUTTON_STYLE);
+			btn_Add.setOnMouseEntered(ex -> btn_Add.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Add.setOnMouseExited(ex -> btn_Add.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
 			btn_Remove.setLayoutX(235);
 			btn_Remove.setLayoutY(100);
 			addABookPane.getChildren().add(btn_Remove);
+			btn_Remove.setStyle(IDLE_BUTTON_STYLE);
+			btn_Remove.setOnMouseEntered(ex -> btn_Add.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Remove.setOnMouseExited(ex -> btn_Add.setStyle(IDLE_BUTTON_STYLE));
 		    
 			listViewAuthors.setOnMouseClicked(elistViewAuthors -> {
 				
@@ -360,11 +480,17 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Save.setLayoutX(275);
 			btn_Save.setLayoutY(380);
 			addABookPane.getChildren().add(btn_Save);
+			btn_Save.setStyle(IDLE_BUTTON_STYLE);
+			btn_Save.setOnMouseEntered(ex -> btn_Save.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Save.setOnMouseExited(ex -> btn_Save.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_Cancel = new Button("Cancel");
 			btn_Cancel.setLayoutX(200);
 			btn_Cancel.setLayoutY(380);
 			addABookPane.getChildren().add(btn_Cancel);
+			btn_Cancel.setStyle(IDLE_BUTTON_STYLE);
+			btn_Cancel.setOnMouseEntered(ex -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Cancel.setOnMouseExited(ex -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 			
 			Scene addABookScene = new Scene(addABookPane, 380, 435);
 			Stage primaryStage2 = new Stage();
@@ -449,12 +575,18 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_AddKeyword.setLayoutX(180);
 			btn_AddKeyword.setLayoutY(330);
 			addABookPane.getChildren().add(btn_AddKeyword);
+			btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE);
+			btn_AddKeyword.setOnMouseEntered(ex -> btn_AddKeyword.setStyle(HOVERED_BUTTON_STYLE));
+			btn_AddKeyword.setOnMouseExited(ex -> btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
 			btn_RemoveKeyword.setLayoutX(235);
 			btn_RemoveKeyword.setLayoutY(330);
 			addABookPane.getChildren().add(btn_RemoveKeyword);
+			btn_RemoveKeyword.setStyle(IDLE_BUTTON_STYLE);
+			btn_RemoveKeyword.setOnMouseEntered(ex -> btn_RemoveKeyword.setStyle(HOVERED_BUTTON_STYLE));
+			btn_RemoveKeyword.setOnMouseExited(ex -> btn_RemoveKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
 			listViewKeywords.setOnMouseClicked(elistViewKeywords -> {
 				
@@ -564,13 +696,19 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Add.setLayoutX(180);
 			btn_Add.setLayoutY(100);
 			editBookPane.getChildren().add(btn_Add);
+			btn_Add.setStyle(IDLE_BUTTON_STYLE);
+			btn_Add.setOnMouseEntered(ex -> btn_Add.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Add.setOnMouseExited(ex -> btn_Add.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
 			btn_Remove.setLayoutX(235);
 			btn_Remove.setLayoutY(100);
 			editBookPane.getChildren().add(btn_Remove);
-		    
+			btn_Remove.setStyle(IDLE_BUTTON_STYLE);
+			btn_Remove.setOnMouseEntered(ex -> btn_Remove.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Remove.setOnMouseExited(ex -> btn_Remove.setStyle(IDLE_BUTTON_STYLE));
+			
 			my_Current_Edit_AuthorList = (ArrayList<String>)(my_Current_Book.getAuthors()).clone();
 			
 			listViewAuthors.setOnMouseClicked(elistViewAuthors -> {
@@ -606,11 +744,17 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_Save.setLayoutX(275);
 			btn_Save.setLayoutY(380);
 			editBookPane.getChildren().add(btn_Save);
+			btn_Save.setStyle(IDLE_BUTTON_STYLE);
+			btn_Save.setOnMouseEntered(ex -> btn_Save.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Save.setOnMouseExited(ex -> btn_Save.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_Cancel = new Button("Cancel");
 			btn_Cancel.setLayoutX(200);
 			btn_Cancel.setLayoutY(380);
 			editBookPane.getChildren().add(btn_Cancel);
+			btn_Cancel.setStyle(IDLE_BUTTON_STYLE);
+			btn_Cancel.setOnMouseEntered(ex -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
+			btn_Cancel.setOnMouseExited(ex -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 			
 			Scene editBookScene = new Scene(editBookPane, 380, 425);
 			Stage primaryStage2 = new Stage();
@@ -701,12 +845,18 @@ public class LibraryDBMS_ver1 extends Application{
 			btn_AddKeyword.setLayoutX(180);
 			btn_AddKeyword.setLayoutY(330);
 			editBookPane.getChildren().add(btn_AddKeyword);
+			btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE);
+			btn_AddKeyword.setOnMouseEntered(ex -> btn_AddKeyword.setStyle(HOVERED_BUTTON_STYLE));
+			btn_AddKeyword.setOnMouseExited(ex -> btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
 			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
 			btn_RemoveKeyword.setLayoutX(235);
 			btn_RemoveKeyword.setLayoutY(330);
 			editBookPane.getChildren().add(btn_RemoveKeyword);
+			btn_RemoveKeyword.setStyle(IDLE_BUTTON_STYLE);
+			btn_RemoveKeyword.setOnMouseEntered(ex -> btn_RemoveKeyword.setStyle(HOVERED_BUTTON_STYLE));
+			btn_RemoveKeyword.setOnMouseExited(ex -> btn_RemoveKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
 			listViewKeywords.setOnMouseClicked(elistViewKeywords -> {
 				
@@ -798,6 +948,80 @@ public class LibraryDBMS_ver1 extends Application{
 			
 	}
 	
+	private void saveCSVFile(File file) {
+		PrintWriter newWriter;
+		try {
+			newWriter = new PrintWriter(file);
+			
+			ArrayList<Book> listOfBooks = my_Current_Library.getList_Of_Books();
+			
+			if (indexOfExport == 2) {
+				
+				newWriter.println("Library name: " + "," + my_Current_Library.getLibrary_Name().replaceAll(",", " "));
+				newWriter.println("Total number of books: " + "," + listOfBooks.size());
+				newWriter.println();
+				
+				newWriter.print("Title: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getTitle().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("Volume: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getVolume().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("Edition: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getEdition().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("Number of Pages: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getNumber_Of_Pages().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("ISBN: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getISBN().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("Keywords: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getKeywords().toString().replaceAll(",", " ") + ",");
+				}
+				newWriter.println();
+				
+				newWriter.print("Date Added: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.print(listOfBooks.get(i).getDateAdded() + ",");
+				}
+				newWriter.println();
+				
+				
+			}else if (indexOfExport == 3) {
+				
+				newWriter.println("Library name: " + "," + my_Current_Library.getLibrary_Name().replaceAll(",", " "));
+				newWriter.println("Total number of books: " + "," + listOfBooks.size());
+				newWriter.println();
+				
+				newWriter.println("Title: ,Volume: ,Edition: ,Number of Pages: ,ISBN: ,Keywords: , Date Added: ,");
+				for(int i = 0 ; i < listOfBooks.size(); i++) {
+					newWriter.println(listOfBooks.get(i).getTitle().replaceAll(",", " ") + "," + listOfBooks.get(i).getVolume().replaceAll(",", " ") + "," + listOfBooks.get(i).getEdition().replaceAll(",", " ") + "," + listOfBooks.get(i).getNumber_Of_Pages().replaceAll(",", " ") + "," + listOfBooks.get(i).getISBN().replaceAll(",", " ") + "," + listOfBooks.get(i).getKeywords().toString().replaceAll(",", " ") + "," + listOfBooks.get(i).getDateAdded());
+				}
+			}
+			
+			newWriter.close();
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}		
+	}
+
 	// Saving .txt file
 	private void saveTextFile(File file) {
 		PrintWriter newWriter;
@@ -805,6 +1029,7 @@ public class LibraryDBMS_ver1 extends Application{
 			newWriter = new PrintWriter(file);
 			
 			ArrayList<Book> listOfBooks = my_Current_Library.getList_Of_Books();
+			newWriter.println(my_Current_Library.getLibrary_Name());
 			newWriter.println("Total number of books: " + listOfBooks.size());
 			newWriter.println();
 			for(int i = 0 ; i < listOfBooks.size(); i++) {
@@ -936,11 +1161,18 @@ public class LibraryDBMS_ver1 extends Application{
 		
 	// Creates a StackPane, adds a text title to it and returns the StackPane.
 	private StackPane getTitle() {	
+		Color newColor = new Color(0.5,0.5,0.5,0.5);
+		switch(indexOfTheme) {
+			case 0: newColor = Color.RED; break;
+			case 1: newColor = Color.GREEN; break;
+			case 2: newColor = Color.BLUE; break;
+			case 3: newColor = Color.BLACK; break;		
+		}
 		
 		StackPane top = new StackPane();
 		Text title = new Text(" Library Database Management System ");
 		title.setFont(Font.font("Verdana", FontWeight.BOLD, 24));
-		title.setFill(Color.GREEN);
+		title.setFill(newColor);
 		Reflection r = new Reflection();
 		r.setFraction(0.5f);
 		title.setEffect(r);
