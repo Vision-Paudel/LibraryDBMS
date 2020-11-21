@@ -955,7 +955,7 @@ public class LibraryDBMS_ver1 extends Application{
 			
 			ArrayList<Book> listOfBooks = my_Current_Library.getList_Of_Books();
 			
-			if (indexOfExport == 2) {
+			if (indexOfExport == 3) {
 				
 				newWriter.println("Library name: " + "," + my_Current_Library.getLibrary_Name().replaceAll(",", " "));
 				newWriter.println("Total number of books: " + "," + listOfBooks.size());
@@ -1004,7 +1004,7 @@ public class LibraryDBMS_ver1 extends Application{
 				newWriter.println();
 				
 				
-			}else if (indexOfExport == 3) {
+			}else if (indexOfExport == 2) {
 				
 				newWriter.println("Library name: " + "," + my_Current_Library.getLibrary_Name().replaceAll(",", " "));
 				newWriter.println("Total number of books: " + "," + listOfBooks.size());
