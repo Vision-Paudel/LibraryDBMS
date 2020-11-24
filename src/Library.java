@@ -9,6 +9,7 @@ public class Library implements Serializable{
 	Date date_Created;
 	
 	ArrayList<Book> list_Of_Books = new ArrayList<Book>();
+	int indexOfTheme = 1;
 	
 	public Library(String library_Name) {
 		this.library_Name = library_Name;
@@ -29,6 +30,14 @@ public class Library implements Serializable{
 
 	public void setDate_Created(Date date_Created) {
 		this.date_Created = date_Created;
+	}
+
+	public int getIndexOfTheme() {
+		return indexOfTheme;
+	}
+
+	public void setIndexOfTheme(int indexOfTheme) {
+		this.indexOfTheme = indexOfTheme;
 	}
 
 	public ArrayList<Book> getList_Of_Books() {

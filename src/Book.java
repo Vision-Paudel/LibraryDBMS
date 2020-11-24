@@ -15,6 +15,25 @@ public class Book implements Comparable<Book>, Serializable {
 	ArrayList<String> keywords = new ArrayList<String>();
 	Date dateAdded;
 	
+	String status = "Unknown";
+	String takenOrReservedBy = "";
+	
+	public String getTakenOrReservedBy() {
+		return takenOrReservedBy;
+	}
+
+	public void setTakenOrReservedBy(String takenOrReservedBy) {
+		this.takenOrReservedBy = takenOrReservedBy;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
 	public Book(String title) {
 		this.title = title;
 		dateAdded = new Date();
