@@ -1,9 +1,13 @@
 # Library Database Management System
-Version 1.9 Features
+Version 2.0 Features
 
 Users can add books, view and edit book information and remove books from the library.
 
-Has better interface. Details are saved permanently in main.library file in same folder as Jar file.
+Details are saved permanently in main.library file in same folder as Jar file.
+
+Users can export to .txt file or .csv file (2 different csv formats available)
+
+Users can change theme which is also permanently saved in main.library file.
 
 <img src="https://github.com/Vision-Paudel/LibraryDBMS/blob/main/LibraryDBMS_ver1.9a.png" alt="Image could not be displayed">
 <img src="https://github.com/Vision-Paudel/LibraryDBMS/blob/main/LibraryDBMS_ver1.9b.png" alt="Image could not be displayed">
