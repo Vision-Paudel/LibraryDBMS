@@ -1,6 +1,6 @@
 # Library Database Management System
 
-*Not compatible with version 1.x files*
+**Not compatible with version 1.x files**
 
 Version 2.0 Features:
 
