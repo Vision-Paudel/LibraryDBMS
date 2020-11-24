@@ -6,7 +6,7 @@ Version 2.0 Features:
 
 Users can add books, view and edit book information and remove books from the library.
 
-Has useful interface. Details are saved permanently in main.library file in same folder as Jar file.
+Has useful interface. Details are sorted and saved permanently in main.library file in same folder as Jar file.
 
 Users can export to .txt file or .csv file (2 different csv formats available)
 
