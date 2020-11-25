@@ -23,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -378,7 +379,15 @@ public class LibraryDBMS_ver2 extends Application{
 		
 		listViewBooks.setOnMouseClicked(e ->{
 			my_Current_Book = listViewBooks.getSelectionModel().getSelectedItem();
-	    	if (my_Current_Book!= null) {
+			if(e.getButton().equals(MouseButton.PRIMARY) && e.getClickCount() == 2){
+		    	if (my_Current_Book!= null) {
+		    		btn_Edit_Book.setDisable(false);		    			
+		    		btn_Edit_Book.fire();
+		    		btn_Edit_Book.setDisable(true);
+		    		btn_Remove_Book.setDisable(true);	
+		    	}
+		    }
+			else if (my_Current_Book!= null) {
 	    		btn_Remove_Book.setDisable(false);
 	    		btn_Edit_Book.setDisable(false);
 	    		lbl_NumPagesShow.setText("Number of Pages: " + my_Current_Book.getNumber_Of_Pages());
@@ -392,11 +401,15 @@ public class LibraryDBMS_ver2 extends Application{
 	    		btn_Edit_Book.setDisable(true);
 	    		lbl_NumPagesShow.setText("Number of Pages: ");
 	    		lbl_ISBNShow.setText("ISBN#: ");
+	    		lbl_StatusShow.setText("Status: ");
 	    		lbl_KeywordsShow.setText("Keywords: ");
 	    		lbl_DateShow.setText("Date Added: ");
 	    	}
+	    	
+	    	
+	    	
 		});
-		
+						
 		listViewBooks.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Book>() {
 		    @Override
 		    public void changed(ObservableValue<? extends Book> observable, Book oldValue, Book newValue) {
@@ -429,6 +442,7 @@ public class LibraryDBMS_ver2 extends Application{
 			lbl_DateShow.setText("Date Added: ");			
 			lbl_NumPagesShow.setText("Number of Pages: ");
     		lbl_ISBNShow.setText("ISBN#: ");
+    		lbl_StatusShow.setText("Status: ");
     		lbl_KeywordsShow.setText("Keywords: ");
 			
 			my_Current_Book = new Book("");
@@ -719,12 +733,13 @@ public class LibraryDBMS_ver2 extends Application{
 		
 		// Editing Book
 		
-		btn_Edit_Book.setOnMouseClicked(e -> {
+		btn_Edit_Book.setOnAction(e -> {
 			
 			listViewBooks.setDisable(true);
 			lbl_DateShow.setText("Date Added: ");			
 			lbl_NumPagesShow.setText("Number of Pages: ");
     		lbl_ISBNShow.setText("ISBN#: ");
+    		lbl_StatusShow.setText("Status: ");
     		lbl_KeywordsShow.setText("Keywords: ");
 			
 			Pane editBookPane = new Pane();	
@@ -1047,7 +1062,7 @@ public class LibraryDBMS_ver2 extends Application{
 		
 		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 2.0 by Vision Paudel");	// Set title
+		primaryStage.setTitle("Library Database Management System version 2.1 by Vision Paudel");	// Set title (Currently version 2.1)
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
