@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -23,6 +24,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.effect.Reflection;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -55,7 +57,7 @@ public class LibraryDBMS_ver2 extends Application{
 	static int indexOfExport = 0;
 	
 	static ComboBox<String> cbThemeMenu = new ComboBox<>();
-	static String[] themeMenuArray = new String[] { "Red" , "Green" , "Blue" , "Black" , "White" };
+	static String[] themeMenuArray = new String[] { "Red" , "Green" , "Blue" , "Black" , "White" , "Custom" };
 	static ObservableList<String> themeItemsList = FXCollections.observableArrayList(themeMenuArray);
 	static int indexOfTheme = 1;
 	
@@ -64,13 +66,18 @@ public class LibraryDBMS_ver2 extends Application{
 	static ObservableList<String> statusItemsList = FXCollections.observableArrayList(statusMenuArray);
 	static int indexOfStatus = 0;
 		
-	final static String[] IDLE_BUTTON_STYLES = {"-fx-background-color: transparent; -fx-border-color: red", "-fx-background-color: transparent; -fx-border-color: green" , "-fx-background-color: transparent; -fx-border-color: blue" , "-fx-background-color: transparent; -fx-border-color: black" , "-fx-background-color: transparent; -fx-border-color: white"};
-	final static String[] HOVERED_BUTTON_STYLES = { "-fx-background-color: red; -fx-text-fill: white;", "-fx-background-color: green; -fx-text-fill: white;", "-fx-background-color: blue; -fx-text-fill: white;", "-fx-background-color: black; -fx-text-fill: white;" , "-fx-background-color: white; -fx-text-fill: black;" };
-	final static String[] PANE_STYLES = { "-fx-background-color: #ffdbd6", "-fx-background-color: #d6ffd6", "-fx-background-color: #d6e5ff", "-fx-background-color: #c2c2c2" , "-fx-background-color: #f5f5f5" };
+	static String[] IDLE_BUTTON_STYLES = {"-fx-background-color: transparent; -fx-border-color: red", "-fx-background-color: transparent; -fx-border-color: green" , "-fx-background-color: transparent; -fx-border-color: blue" , "-fx-background-color: transparent; -fx-border-color: black" , "-fx-background-color: transparent; -fx-border-color: white" , "-fx-background-color: transparent; -fx-border-color: red"};
+	static String[] HOVERED_BUTTON_STYLES = { "-fx-background-color: red; -fx-text-fill: white;", "-fx-background-color: green; -fx-text-fill: white;", "-fx-background-color: blue; -fx-text-fill: white;", "-fx-background-color: black; -fx-text-fill: white;" , "-fx-background-color: white; -fx-text-fill: black;" , "-fx-background-color: red; -fx-text-fill: white;"};
+	static String[] PANE_STYLES = { "-fx-background-color: #ffdbd6", "-fx-background-color: #d6ffd6", "-fx-background-color: #d6e5ff", "-fx-background-color: #c2c2c2" , "-fx-background-color: #f5f5f5" ,  "-fx-background-color: #ffdbd6" };
 	static int styleIndex = 1;
 	static String IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
 	static String HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
 	static String PANE_STYLE = PANE_STYLES[styleIndex];
+	static String titleColor = "ff0000";
+	static String idleButtonBackgroundColor = "";
+	static String idleButtonBorderColor = "";
+	static String hoverButtonBackgroundColor = "";
+	static String hoverButtonTextFillColor = "";
 	
 	// Launch Application
 	public static void main(String[] args) {
@@ -129,6 +136,11 @@ public class LibraryDBMS_ver2 extends Application{
 		}
 		
 		// Main Pane
+		
+		Image imageSaveBackup = new Image("/img/save_all.png");
+        ImageView imageViewSaveBackup = new ImageView(imageSaveBackup);
+        Image imageSave = new Image("/img/save.png");
+        ImageView imageViewSave = new ImageView(imageSave);
 		
 		Label lbl_library_Name = new Label("Library Name:");
 		lbl_library_Name.setLayoutX(80);
@@ -229,7 +241,7 @@ public class LibraryDBMS_ver2 extends Application{
 		cbThemeMenu.getItems().addAll(themeItemsList);
 		cbThemeMenu.setValue("Theme");
 		cbThemeMenu.setOnAction ( ex -> {
-			if (themeItemsList.indexOf(cbThemeMenu.getValue()) != -1) {
+			if (themeItemsList.indexOf(cbThemeMenu.getValue()) != -1 && themeItemsList.indexOf(cbThemeMenu.getValue()) < 5) {
 				indexOfTheme = themeItemsList.indexOf(cbThemeMenu.getValue());
 				styleIndex = indexOfTheme;
 				IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
@@ -238,6 +250,188 @@ public class LibraryDBMS_ver2 extends Application{
 				mainPane.setTop(getTitle());
 				libraryPane.setStyle(PANE_STYLE);				
 			}
+			else {
+				
+				Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
+				confirmationAlert.setHeaderText("Custom Theme is Under Development.");
+				confirmationAlert.setContentText("Custom theme is still under development and it will not be saved in main.library file.");
+				confirmationAlert.showAndWait();
+				
+				cbThemeMenu.setDisable(true);
+				indexOfTheme = themeItemsList.indexOf(cbThemeMenu.getValue());
+				styleIndex = indexOfTheme;
+								
+				Pane customThemePane = new Pane();	
+				customThemePane.setStyle(PANE_STYLE);
+				
+				Scene customThemeeScene = new Scene(customThemePane, 250, 320);
+				Stage primaryStage2 = new Stage();
+				
+				primaryStage2.setTitle("Custom Theme");
+				primaryStage2.setScene(customThemeeScene);
+				primaryStage2.setResizable(false);
+				primaryStage2.show();
+				
+				Button btn_Save = new Button("Save!", imageViewSave);
+				btn_Save.setLayoutX(175);
+				btn_Save.setLayoutY(280);
+				customThemePane.getChildren().add(btn_Save);
+				btn_Save.setStyle(IDLE_BUTTON_STYLE);
+				btn_Save.setOnMouseEntered(e -> btn_Save.setStyle(HOVERED_BUTTON_STYLE));
+				btn_Save.setOnMouseExited(e -> btn_Save.setStyle(IDLE_BUTTON_STYLE));
+				
+				Button btn_Cancel = new Button("Cancel");
+				btn_Cancel.setLayoutX(100);
+				btn_Cancel.setLayoutY(280);
+				customThemePane.getChildren().add(btn_Cancel);
+				btn_Cancel.setStyle(IDLE_BUTTON_STYLE);
+				btn_Cancel.setOnMouseEntered(e -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
+				btn_Cancel.setOnMouseExited(e -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
+				
+				PANE_STYLES[5] = "-fx-background-color: " + "ffffff" ;
+				
+				Label paneBackground = new Label("Pane Background: ");
+				paneBackground.setLayoutX(10);
+				paneBackground.setLayoutY(10);
+				paneBackground.setUnderline(true);
+				customThemePane.getChildren().add(paneBackground);
+				
+				final ColorPicker colorPickerPaneBackground = new ColorPicker();
+				colorPickerPaneBackground.setLayoutX(120);
+				colorPickerPaneBackground.setLayoutY(10);
+				customThemePane.getChildren().add(colorPickerPaneBackground);
+				
+				colorPickerPaneBackground.setOnAction(e -> {
+					String value = "" + colorPickerPaneBackground.getValue();
+					value = value.substring(value.length() - 8);
+					PANE_STYLES[5] = "-fx-background-color: #" + value ;
+				});
+				
+				Label idleButton = new Label("Idle Button");
+				idleButton.setLayoutX(10);
+				idleButton.setLayoutY(50);
+				idleButton.setUnderline(true);
+				customThemePane.getChildren().add(idleButton);
+				
+				Label idleButtonBackground = new Label("Background: ");
+				idleButtonBackground.setLayoutX(10);
+				idleButtonBackground.setLayoutY(80);
+				customThemePane.getChildren().add(idleButtonBackground);
+				
+				final ColorPicker colorPickerIdleButtonBackground = new ColorPicker();
+				colorPickerIdleButtonBackground.setLayoutX(120);
+				colorPickerIdleButtonBackground.setLayoutY(80);
+				customThemePane.getChildren().add(colorPickerIdleButtonBackground);
+				
+				idleButtonBackgroundColor = "-fx-background-color: #" + "ffffff" + ";" ;
+				colorPickerIdleButtonBackground.setOnAction(e -> {
+					String value = "" + colorPickerIdleButtonBackground.getValue();
+					value = value.substring(value.length() - 8);
+					idleButtonBackgroundColor = "-fx-background-color: #" + value + ";" ;
+				});
+				
+				Label idleButtonBorder = new Label("Border: ");
+				idleButtonBorder.setLayoutX(10);
+				idleButtonBorder.setLayoutY(110);
+				customThemePane.getChildren().add(idleButtonBorder);
+				
+				final ColorPicker colorPickerIdleButtonBorder = new ColorPicker();
+				colorPickerIdleButtonBorder.setLayoutX(120);
+				colorPickerIdleButtonBorder.setLayoutY(110);
+				customThemePane.getChildren().add(colorPickerIdleButtonBorder);
+				
+				idleButtonBorderColor = "-fx-border-color: #" + "ffffff" ;
+				colorPickerIdleButtonBorder.setOnAction(e -> {
+					String value = "" + colorPickerIdleButtonBorder.getValue();
+					value = value.substring(value.length() - 8);
+					idleButtonBorderColor = "-fx-border-color: #" + value ;
+				});
+				
+				Label hoverButton = new Label("Hover Button");
+				hoverButton.setLayoutX(10);
+				hoverButton.setLayoutY(150);
+				hoverButton.setUnderline(true);
+				customThemePane.getChildren().add(hoverButton);
+				
+				Label hoverButtonBackground = new Label("Background: ");
+				hoverButtonBackground.setLayoutX(10);
+				hoverButtonBackground.setLayoutY(180);
+				customThemePane.getChildren().add(hoverButtonBackground);
+				
+				final ColorPicker colorPickerHoverButtonBackground = new ColorPicker();
+				colorPickerHoverButtonBackground.setLayoutX(120);
+				colorPickerHoverButtonBackground.setLayoutY(180);
+				customThemePane.getChildren().add(colorPickerHoverButtonBackground);
+				
+				hoverButtonBackgroundColor = "-fx-background-color: #" + "ffffff" + ";" ;
+				colorPickerHoverButtonBackground.setOnAction(e -> {
+					String value = "" + colorPickerHoverButtonBackground.getValue();
+					value = value.substring(value.length() - 8);
+					hoverButtonBackgroundColor = "-fx-background-color: #" + value + ";" ;
+				});
+				
+				Label hoverButtonTextFill = new Label("Text Fill: ");
+				hoverButtonTextFill.setLayoutX(10);
+				hoverButtonTextFill.setLayoutY(210);
+				customThemePane.getChildren().add(hoverButtonTextFill);
+				
+				final ColorPicker colorPickerHoverButtonTextFill = new ColorPicker();
+				colorPickerHoverButtonTextFill.setLayoutX(120);
+				colorPickerHoverButtonTextFill.setLayoutY(210);
+				customThemePane.getChildren().add(colorPickerHoverButtonTextFill);				
+				
+				hoverButtonTextFillColor = "-fx-text-fill: #" + "ffffff" + ";" ;
+				colorPickerHoverButtonTextFill.setOnAction(e -> {
+					String value = "" + colorPickerHoverButtonTextFill.getValue();
+					value = value.substring(value.length() - 8);
+					hoverButtonTextFillColor = "-fx-text-fill: #" + value ;
+				});
+				
+				Label titleColor = new Label("Title: ");
+				titleColor.setLayoutX(10);
+				titleColor.setLayoutY(240);
+				titleColor.setUnderline(true);
+				customThemePane.getChildren().add(titleColor);
+				
+				final ColorPicker colorPickerTitleColor = new ColorPicker();
+				colorPickerTitleColor.setLayoutX(120);
+				colorPickerTitleColor.setLayoutY(240);
+				customThemePane.getChildren().add(colorPickerTitleColor);				
+				
+				LibraryDBMS_ver2.titleColor = "ffffff" ;
+				colorPickerTitleColor.setOnAction(e -> {
+					String value = "" + colorPickerTitleColor.getValue();
+					value = value.substring(value.length() - 8);
+					LibraryDBMS_ver2.titleColor = value ;
+				});
+				
+				
+				btn_Save.setOnMouseClicked(eCancel -> {
+					cbThemeMenu.setDisable(false);					
+					primaryStage2.close();
+					
+					PANE_STYLE = PANE_STYLES[styleIndex];
+					mainPane.setTop(getTitle());
+					libraryPane.setStyle(PANE_STYLE);
+					
+					IDLE_BUTTON_STYLES[5] = idleButtonBackgroundColor + idleButtonBorderColor;
+					IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
+					
+					HOVERED_BUTTON_STYLES[5] = hoverButtonBackgroundColor + hoverButtonTextFillColor;
+					HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
+				});
+				
+				
+				btn_Cancel.setOnMouseClicked(eCancel -> {
+					cbThemeMenu.setDisable(false);					
+					primaryStage2.close();
+				});
+				
+				primaryStage2.setOnCloseRequest(event -> {
+					cbThemeMenu.setDisable(false);					
+				});				
+			}
+			
 		});
 		cbThemeMenu.setLayoutX(440);
 		cbThemeMenu.setLayoutY(20);
@@ -274,11 +468,7 @@ public class LibraryDBMS_ver2 extends Application{
 			}
 		});
 		
-		Image imageSaveBackup = new Image("/img/save_all.png");
-        ImageView imageViewSaveBackup = new ImageView(imageSaveBackup);
-        Image imageSave = new Image("/img/save.png");
-        ImageView imageViewSave = new ImageView(imageSave);
-		
+				
 		Button btnSaveBackup = new Button("Backup Library Data", imageViewSaveBackup);
 		btnSaveBackup.setLayoutX(380);
 		btnSaveBackup.setLayoutY(55);
@@ -487,6 +677,11 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_Add.setOnMouseEntered(ex -> btn_Add.setStyle(HOVERED_BUTTON_STYLE));
 			btn_Add.setOnMouseExited(ex -> btn_Add.setStyle(IDLE_BUTTON_STYLE));
 			
+			tf_Author.setOnKeyReleased( ex -> {
+				if (ex.getCode() == KeyCode.ENTER)
+					btn_Add.fire();
+			});
+			
 			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
 			btn_Remove.setLayoutX(235);
@@ -508,8 +703,8 @@ public class LibraryDBMS_ver2 extends Application{
 		    	}
 		    });
 		    
-			btn_Add.setOnMouseClicked(eAddAuthor -> {
-				if (!tf_Author.getText().equals("")) {
+			btn_Add.setOnAction(eAddAuthor -> {
+				if (!tf_Author.getText().equals("") && !tf_Author.getText().equals(listViewAuthors.getSelectionModel().getSelectedItem())) {
 					my_Current_Book.addAuthor(tf_Author.getText());
 					tf_Author.setText("");
 					fillAuthorList(author_data);
@@ -628,6 +823,11 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_AddKeyword.setOnMouseEntered(ex -> btn_AddKeyword.setStyle(HOVERED_BUTTON_STYLE));
 			btn_AddKeyword.setOnMouseExited(ex -> btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
+			tf_Keywords.setOnKeyReleased( ex -> {
+				if (ex.getCode() == KeyCode.ENTER)
+					btn_AddKeyword.fire();
+			});
+			
 			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
 			btn_RemoveKeyword.setLayoutX(235);
@@ -649,8 +849,8 @@ public class LibraryDBMS_ver2 extends Application{
 		    	}
 		    });
 			
-			btn_AddKeyword.setOnMouseClicked(eAddKeyword -> {
-				if (!tf_Keywords.getText().equals("")) {
+			btn_AddKeyword.setOnAction(eAddKeyword -> {
+				if (!tf_Keywords.getText().equals("") && !tf_Keywords.getText().equals(listViewKeywords.getSelectionModel().getSelectedItem())) {
 					my_Current_Book.addKeyword(tf_Keywords.getText());
 					tf_Keywords.setText("");
 					fillKeywordsList(keywords_data);
@@ -784,6 +984,11 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_Add.setOnMouseEntered(ex -> btn_Add.setStyle(HOVERED_BUTTON_STYLE));
 			btn_Add.setOnMouseExited(ex -> btn_Add.setStyle(IDLE_BUTTON_STYLE));
 			
+			tf_Author.setOnKeyReleased( ex -> {
+				if (ex.getCode() == KeyCode.ENTER)
+					btn_Add.fire();
+			});
+			
 			Button btn_Remove = new Button("Clear All Author(s)");
 			btn_Remove.setDisable(true);
 			btn_Remove.setLayoutX(235);
@@ -807,8 +1012,8 @@ public class LibraryDBMS_ver2 extends Application{
 		    	}
 		    });
 		    
-			btn_Add.setOnMouseClicked(eAddAuthor -> {
-				if (!tf_Author.getText().equals("")) {
+			btn_Add.setOnAction(eAddAuthor -> {
+				if (!tf_Author.getText().equals("") && !tf_Author.getText().equals(listViewAuthors.getSelectionModel().getSelectedItem())) {
 					my_Current_Edit_AuthorList.add(tf_Author.getText());
 					tf_Author.setText("");
 					fillEditAuthorList(author_data);
@@ -933,6 +1138,11 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_AddKeyword.setOnMouseEntered(ex -> btn_AddKeyword.setStyle(HOVERED_BUTTON_STYLE));
 			btn_AddKeyword.setOnMouseExited(ex -> btn_AddKeyword.setStyle(IDLE_BUTTON_STYLE));
 			
+			tf_Keywords.setOnKeyReleased( ex -> {
+				if (ex.getCode() == KeyCode.ENTER)
+					btn_AddKeyword.fire();
+			});
+			
 			Button btn_RemoveKeyword = new Button("Clear All Keyword(s)");
 			btn_RemoveKeyword.setDisable(true);
 			btn_RemoveKeyword.setLayoutX(235);
@@ -954,8 +1164,8 @@ public class LibraryDBMS_ver2 extends Application{
 		    	}
 		    });
 			
-			btn_AddKeyword.setOnMouseClicked(eAddKeyword -> {
-				if (!tf_Keywords.getText().equals("")) {
+			btn_AddKeyword.setOnAction(eAddKeyword -> {
+				if (!tf_Keywords.getText().equals("") && !tf_Keywords.getText().equals(listViewKeywords.getSelectionModel().getSelectedItem())) {
 					my_Current_Edit_KeywordList.add(tf_Keywords.getText());
 					tf_Keywords.setText("");
 					fillEditKeywordsList(keywords_data);
@@ -1058,11 +1268,9 @@ public class LibraryDBMS_ver2 extends Application{
     		saveData(newLibraryFile);	
     		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
-	    
-		
-		
+	    		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 2.1 by Vision Paudel");	// Set title (Currently version 2.1)
+		primaryStage.setTitle("Library Database Management System version 2.5 by Vision Paudel");	// Set title (Currently version 2.5)
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
@@ -1296,13 +1504,14 @@ public class LibraryDBMS_ver2 extends Application{
 		
 	// Creates a StackPane, adds a text title to it and returns the StackPane.
 	private StackPane getTitle() {	
-		Color newColor = Color.GREEN;
+		Color newColor = Color.RED;
 		switch(indexOfTheme) {
 			case 0: newColor = Color.RED; break;
 			case 1: newColor = Color.GREEN; break;
 			case 2: newColor = Color.BLUE; break;
 			case 3: newColor = Color.BLACK; break;
 			case 4: newColor = Color.WHITE; break;
+			case 5: newColor = Color.web(titleColor); break;
 		}
 		
 		StackPane top = new StackPane();
