@@ -2,7 +2,7 @@
 
 **Not compatible with version 1.x library files**
 
-Version 2.5 Features:
+Version 2.6 Features:
 
 Users can add books, view and edit book information and remove books from the library.
 
