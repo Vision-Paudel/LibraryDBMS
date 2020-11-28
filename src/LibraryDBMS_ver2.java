@@ -66,18 +66,34 @@ public class LibraryDBMS_ver2 extends Application{
 	static ObservableList<String> statusItemsList = FXCollections.observableArrayList(statusMenuArray);
 	static int indexOfStatus = 0;
 		
-	static String[] IDLE_BUTTON_STYLES = {"-fx-background-color: transparent; -fx-border-color: red", "-fx-background-color: transparent; -fx-border-color: green" , "-fx-background-color: transparent; -fx-border-color: blue" , "-fx-background-color: transparent; -fx-border-color: black" , "-fx-background-color: transparent; -fx-border-color: white" , "-fx-background-color: transparent; -fx-border-color: red"};
-	static String[] HOVERED_BUTTON_STYLES = { "-fx-background-color: red; -fx-text-fill: white;", "-fx-background-color: green; -fx-text-fill: white;", "-fx-background-color: blue; -fx-text-fill: white;", "-fx-background-color: black; -fx-text-fill: white;" , "-fx-background-color: white; -fx-text-fill: black;" , "-fx-background-color: red; -fx-text-fill: white;"};
+	static String[] IDLE_BUTTON_STYLES = {	"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: red", 		// Red
+											"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: green" , 	// Green
+											"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: blue" , 	// Blue
+											"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: black" , 	// Black
+											"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: white" , 	// White
+											"-fx-background-color: transparent; -fx-text-fill: black; -fx-border-color: red"     };	// Custom
+	
+	static String[] HOVERED_BUTTON_STYLES = { 	"-fx-background-color: red; -fx-text-fill: white; -fx-border-color: red",			// Red
+												"-fx-background-color: green; -fx-text-fill: white; -fx-border-color: green", 		// Green
+												"-fx-background-color: blue; -fx-text-fill: white; -fx-border-color: blue", 		// Blue
+												"-fx-background-color: black; -fx-text-fill: white; -fx-border-color: black;" , 	// Black
+												"-fx-background-color: white; -fx-text-fill: black; -fx-border-color: white;" , 	// White
+												"-fx-background-color: red; -fx-text-fill: white; -fx-border-color: red;"		};	// Custom
+	
 	static String[] PANE_STYLES = { "-fx-background-color: #ffdbd6", "-fx-background-color: #d6ffd6", "-fx-background-color: #d6e5ff", "-fx-background-color: #c2c2c2" , "-fx-background-color: #f5f5f5" ,  "-fx-background-color: #ffdbd6" };
 	static int styleIndex = 1;
 	static String IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
 	static String HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
 	static String PANE_STYLE = PANE_STYLES[styleIndex];
+	
 	static String titleColor = "ff0000";
 	static String idleButtonBackgroundColor = "";
+	static String idleButtonTextFillColor = "";
 	static String idleButtonBorderColor = "";
+	
 	static String hoverButtonBackgroundColor = "";
 	static String hoverButtonTextFillColor = "";
+	static String hoverButtonBorderColor = "";
 	
 	// Launch Application
 	public static void main(String[] args) {
@@ -264,7 +280,7 @@ public class LibraryDBMS_ver2 extends Application{
 				Pane customThemePane = new Pane();	
 				customThemePane.setStyle(PANE_STYLE);
 				
-				Scene customThemeeScene = new Scene(customThemePane, 250, 320);
+				Scene customThemeeScene = new Scene(customThemePane, 250, 450);
 				Stage primaryStage2 = new Stage();
 				
 				primaryStage2.setTitle("Custom Theme");
@@ -274,7 +290,7 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Button btn_Save = new Button("Save!", imageViewSave);
 				btn_Save.setLayoutX(175);
-				btn_Save.setLayoutY(280);
+				btn_Save.setLayoutY(420);
 				customThemePane.getChildren().add(btn_Save);
 				btn_Save.setStyle(IDLE_BUTTON_STYLE);
 				btn_Save.setOnMouseEntered(e -> btn_Save.setStyle(HOVERED_BUTTON_STYLE));
@@ -282,13 +298,13 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Button btn_Cancel = new Button("Cancel");
 				btn_Cancel.setLayoutX(100);
-				btn_Cancel.setLayoutY(280);
+				btn_Cancel.setLayoutY(420);
 				customThemePane.getChildren().add(btn_Cancel);
 				btn_Cancel.setStyle(IDLE_BUTTON_STYLE);
 				btn_Cancel.setOnMouseEntered(e -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
 				btn_Cancel.setOnMouseExited(e -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 				
-				PANE_STYLES[5] = "-fx-background-color: " + "ffffff" ;
+				PANE_STYLES[5] = "-fx-background-color: " + "#ffdbd6" ;
 				
 				Label paneBackground = new Label("Pane Background: ");
 				paneBackground.setLayoutX(10);
@@ -301,6 +317,7 @@ public class LibraryDBMS_ver2 extends Application{
 				colorPickerPaneBackground.setLayoutY(10);
 				customThemePane.getChildren().add(colorPickerPaneBackground);
 				
+				colorPickerPaneBackground.setValue(	Color.web("ffdbd6") );
 				colorPickerPaneBackground.setOnAction(e -> {
 					String value = "" + colorPickerPaneBackground.getValue();
 					value = value.substring(value.length() - 8);
@@ -323,24 +340,45 @@ public class LibraryDBMS_ver2 extends Application{
 				colorPickerIdleButtonBackground.setLayoutY(80);
 				customThemePane.getChildren().add(colorPickerIdleButtonBackground);
 				
-				idleButtonBackgroundColor = "-fx-background-color: #" + "ffffff" + ";" ;
+				idleButtonBackgroundColor = "-fx-background-color: " + "transparent" + ";" ;
+				colorPickerIdleButtonBackground.setValue( Color.TRANSPARENT );
 				colorPickerIdleButtonBackground.setOnAction(e -> {
 					String value = "" + colorPickerIdleButtonBackground.getValue();
 					value = value.substring(value.length() - 8);
 					idleButtonBackgroundColor = "-fx-background-color: #" + value + ";" ;
 				});
 				
+				Label idleButtonTextFill = new Label("Text Fill: ");
+				idleButtonTextFill.setLayoutX(10);
+				idleButtonTextFill.setLayoutY(110);
+				customThemePane.getChildren().add(idleButtonTextFill);
+				
+				final ColorPicker colorPickerIdleButtonTextFill = new ColorPicker();
+				colorPickerIdleButtonTextFill.setLayoutX(120);
+				colorPickerIdleButtonTextFill.setLayoutY(110);
+				customThemePane.getChildren().add(colorPickerIdleButtonTextFill);				
+				
+				idleButtonTextFillColor = "-fx-text-fill: " + "black" + ";" ;
+				colorPickerIdleButtonTextFill.setValue(Color.BLACK);
+				colorPickerIdleButtonTextFill.setOnAction(e -> {
+					String value = "" + colorPickerIdleButtonTextFill.getValue();
+					value = value.substring(value.length() - 8);
+					idleButtonTextFillColor = "-fx-text-fill: #" + value + ";" ;
+				});
+				
+				
 				Label idleButtonBorder = new Label("Border: ");
 				idleButtonBorder.setLayoutX(10);
-				idleButtonBorder.setLayoutY(110);
+				idleButtonBorder.setLayoutY(140);
 				customThemePane.getChildren().add(idleButtonBorder);
 				
 				final ColorPicker colorPickerIdleButtonBorder = new ColorPicker();
 				colorPickerIdleButtonBorder.setLayoutX(120);
-				colorPickerIdleButtonBorder.setLayoutY(110);
+				colorPickerIdleButtonBorder.setLayoutY(140);
 				customThemePane.getChildren().add(colorPickerIdleButtonBorder);
 				
-				idleButtonBorderColor = "-fx-border-color: #" + "ffffff" ;
+				idleButtonBorderColor = "-fx-border-color: " + "red" ;
+				colorPickerIdleButtonBorder.setValue( Color.RED);
 				colorPickerIdleButtonBorder.setOnAction(e -> {
 					String value = "" + colorPickerIdleButtonBorder.getValue();
 					value = value.substring(value.length() - 8);
@@ -349,21 +387,22 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Label hoverButton = new Label("Hover Button");
 				hoverButton.setLayoutX(10);
-				hoverButton.setLayoutY(150);
+				hoverButton.setLayoutY(180);
 				hoverButton.setUnderline(true);
 				customThemePane.getChildren().add(hoverButton);
 				
 				Label hoverButtonBackground = new Label("Background: ");
 				hoverButtonBackground.setLayoutX(10);
-				hoverButtonBackground.setLayoutY(180);
+				hoverButtonBackground.setLayoutY(210);
 				customThemePane.getChildren().add(hoverButtonBackground);
 				
 				final ColorPicker colorPickerHoverButtonBackground = new ColorPicker();
 				colorPickerHoverButtonBackground.setLayoutX(120);
-				colorPickerHoverButtonBackground.setLayoutY(180);
+				colorPickerHoverButtonBackground.setLayoutY(210);
 				customThemePane.getChildren().add(colorPickerHoverButtonBackground);
 				
-				hoverButtonBackgroundColor = "-fx-background-color: #" + "ffffff" + ";" ;
+				hoverButtonBackgroundColor = "-fx-background-color: " + "red" + ";" ;
+				colorPickerHoverButtonBackground.setValue( Color.RED );
 				colorPickerHoverButtonBackground.setOnAction(e -> {
 					String value = "" + colorPickerHoverButtonBackground.getValue();
 					value = value.substring(value.length() - 8);
@@ -372,33 +411,53 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Label hoverButtonTextFill = new Label("Text Fill: ");
 				hoverButtonTextFill.setLayoutX(10);
-				hoverButtonTextFill.setLayoutY(210);
+				hoverButtonTextFill.setLayoutY(240);
 				customThemePane.getChildren().add(hoverButtonTextFill);
 				
 				final ColorPicker colorPickerHoverButtonTextFill = new ColorPicker();
 				colorPickerHoverButtonTextFill.setLayoutX(120);
-				colorPickerHoverButtonTextFill.setLayoutY(210);
+				colorPickerHoverButtonTextFill.setLayoutY(240);
 				customThemePane.getChildren().add(colorPickerHoverButtonTextFill);				
 				
-				hoverButtonTextFillColor = "-fx-text-fill: #" + "ffffff" + ";" ;
+				hoverButtonTextFillColor = "-fx-text-fill: " + "white" + ";" ;
+				colorPickerHoverButtonTextFill.setValue( Color.WHITE );
 				colorPickerHoverButtonTextFill.setOnAction(e -> {
 					String value = "" + colorPickerHoverButtonTextFill.getValue();
 					value = value.substring(value.length() - 8);
-					hoverButtonTextFillColor = "-fx-text-fill: #" + value ;
+					hoverButtonTextFillColor = "-fx-text-fill: #" + value + ";" ;
+				});
+				
+				Label hoverButtonBorder = new Label("Border: ");
+				hoverButtonBorder.setLayoutX(10);
+				hoverButtonBorder.setLayoutY(270);
+				customThemePane.getChildren().add(hoverButtonBorder);
+				
+				final ColorPicker colorPickerHoverButtonBorder = new ColorPicker();
+				colorPickerHoverButtonBorder.setLayoutX(120);
+				colorPickerHoverButtonBorder.setLayoutY(270);
+				customThemePane.getChildren().add(colorPickerHoverButtonBorder);
+				
+				hoverButtonBorderColor = "-fx-border-color: " + "red" ;
+				colorPickerHoverButtonBorder.setValue( Color.RED );
+				colorPickerHoverButtonBorder.setOnAction(e -> {
+					String value = "" + colorPickerHoverButtonBorder.getValue();
+					value = value.substring(value.length() - 8);
+					hoverButtonBorderColor = "-fx-border-color: #" + value ;
 				});
 				
 				Label titleColor = new Label("Title: ");
 				titleColor.setLayoutX(10);
-				titleColor.setLayoutY(240);
+				titleColor.setLayoutY(310);
 				titleColor.setUnderline(true);
 				customThemePane.getChildren().add(titleColor);
 				
 				final ColorPicker colorPickerTitleColor = new ColorPicker();
 				colorPickerTitleColor.setLayoutX(120);
-				colorPickerTitleColor.setLayoutY(240);
+				colorPickerTitleColor.setLayoutY(310);
 				customThemePane.getChildren().add(colorPickerTitleColor);				
 				
-				LibraryDBMS_ver2.titleColor = "ffffff" ;
+				LibraryDBMS_ver2.titleColor = "red" ;
+				colorPickerTitleColor.setValue( Color.RED);
 				colorPickerTitleColor.setOnAction(e -> {
 					String value = "" + colorPickerTitleColor.getValue();
 					value = value.substring(value.length() - 8);
@@ -414,10 +473,10 @@ public class LibraryDBMS_ver2 extends Application{
 					mainPane.setTop(getTitle());
 					libraryPane.setStyle(PANE_STYLE);
 					
-					IDLE_BUTTON_STYLES[5] = idleButtonBackgroundColor + idleButtonBorderColor;
+					IDLE_BUTTON_STYLES[5] = idleButtonBackgroundColor + idleButtonTextFillColor + idleButtonBorderColor;
 					IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
 					
-					HOVERED_BUTTON_STYLES[5] = hoverButtonBackgroundColor + hoverButtonTextFillColor;
+					HOVERED_BUTTON_STYLES[5] = hoverButtonBackgroundColor + hoverButtonTextFillColor + hoverButtonBorderColor;
 					HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
 				});
 				
@@ -1270,7 +1329,7 @@ public class LibraryDBMS_ver2 extends Application{
 		});
 	    		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 2.5 by Vision Paudel");	// Set title (Currently version 2.5)
+		primaryStage.setTitle("Library Database Management System version 2.6 by Vision Paudel");	// Set title (Currently version 2.5)
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
