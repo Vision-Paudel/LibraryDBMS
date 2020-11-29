@@ -6,6 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -87,6 +88,8 @@ public class LibraryDBMS_ver2 extends Application{
 	static String PANE_STYLE = PANE_STYLES[styleIndex];
 	
 	static String titleColor = "ff0000";
+	
+	static String unSavedPANE_STYLE = "";
 	static String idleButtonBackgroundColor = "";
 	static String idleButtonTextFillColor = "";
 	static String idleButtonBorderColor = "";
@@ -110,7 +113,7 @@ public class LibraryDBMS_ver2 extends Application{
 		// Create and add title to the top of the Border Pane.
 		mainPane.setTop(getTitle());
 		mainPane.setCenter(libraryPane);
-		
+					
 		// If library file exists, open it else create a new one and open it.
 		File newLibraryFile = new File("main.library") ;
 		if(newLibraryFile.exists()) {
@@ -120,6 +123,17 @@ public class LibraryDBMS_ver2 extends Application{
 			    my_Current_Library = (Library) ois.readObject();
 			    
 				styleIndex = indexOfTheme = my_Current_Library.getIndexOfTheme();
+				File customTheme = new File("customtheme.library") ;
+				
+				if(styleIndex == 5 && customTheme.exists()) {					
+					Scanner customThemeInput = new Scanner(customTheme);
+					PANE_STYLES[styleIndex] = customThemeInput.nextLine();
+					IDLE_BUTTON_STYLES[styleIndex] = customThemeInput.nextLine();
+					HOVERED_BUTTON_STYLES[styleIndex] = customThemeInput.nextLine();
+					titleColor = customThemeInput.nextLine();					
+					customThemeInput.close();
+				}
+				
 				IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
 				HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
 				PANE_STYLE = PANE_STYLES[styleIndex];
@@ -152,6 +166,7 @@ public class LibraryDBMS_ver2 extends Application{
 		}
 		
 		// Main Pane
+		cbThemeMenu.setValue("Theme");
 		
 		Image imageSaveBackup = new Image("/img/save_all.png");
         ImageView imageViewSaveBackup = new ImageView(imageSaveBackup);
@@ -255,8 +270,8 @@ public class LibraryDBMS_ver2 extends Application{
         });
 		
 		cbThemeMenu.getItems().addAll(themeItemsList);
-		cbThemeMenu.setValue("Theme");
 		cbThemeMenu.setOnAction ( ex -> {
+										
 			if (themeItemsList.indexOf(cbThemeMenu.getValue()) != -1 && themeItemsList.indexOf(cbThemeMenu.getValue()) < 5) {
 				indexOfTheme = themeItemsList.indexOf(cbThemeMenu.getValue());
 				styleIndex = indexOfTheme;
@@ -267,20 +282,21 @@ public class LibraryDBMS_ver2 extends Application{
 				libraryPane.setStyle(PANE_STYLE);				
 			}
 			else {
-				
-				Alert confirmationAlert = new Alert(AlertType.CONFIRMATION);
-				confirmationAlert.setHeaderText("Custom Theme is Under Development.");
-				confirmationAlert.setContentText("Custom theme is still under development and it will not be saved in main.library file.");
-				confirmationAlert.showAndWait();
-				
+								
 				cbThemeMenu.setDisable(true);
 				indexOfTheme = themeItemsList.indexOf(cbThemeMenu.getValue());
 				styleIndex = indexOfTheme;
-								
+				
+				IDLE_BUTTON_STYLE = IDLE_BUTTON_STYLES[styleIndex];
+				HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
+				PANE_STYLE = PANE_STYLES[styleIndex];
+				mainPane.setTop(getTitle());
+				libraryPane.setStyle(PANE_STYLE);
+				
 				Pane customThemePane = new Pane();	
 				customThemePane.setStyle(PANE_STYLE);
 				
-				Scene customThemeeScene = new Scene(customThemePane, 250, 450);
+				Scene customThemeeScene = new Scene(customThemePane, 250, 420);
 				Stage primaryStage2 = new Stage();
 				
 				primaryStage2.setTitle("Custom Theme");
@@ -290,7 +306,7 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Button btn_Save = new Button("Save!", imageViewSave);
 				btn_Save.setLayoutX(175);
-				btn_Save.setLayoutY(420);
+				btn_Save.setLayoutY(380);
 				customThemePane.getChildren().add(btn_Save);
 				btn_Save.setStyle(IDLE_BUTTON_STYLE);
 				btn_Save.setOnMouseEntered(e -> btn_Save.setStyle(HOVERED_BUTTON_STYLE));
@@ -298,13 +314,13 @@ public class LibraryDBMS_ver2 extends Application{
 				
 				Button btn_Cancel = new Button("Cancel");
 				btn_Cancel.setLayoutX(100);
-				btn_Cancel.setLayoutY(420);
+				btn_Cancel.setLayoutY(380);
 				customThemePane.getChildren().add(btn_Cancel);
 				btn_Cancel.setStyle(IDLE_BUTTON_STYLE);
 				btn_Cancel.setOnMouseEntered(e -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
 				btn_Cancel.setOnMouseExited(e -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 				
-				PANE_STYLES[5] = "-fx-background-color: " + "#ffdbd6" ;
+				unSavedPANE_STYLE = "-fx-background-color: " + "#ffdbd6" ;
 				
 				Label paneBackground = new Label("Pane Background: ");
 				paneBackground.setLayoutX(10);
@@ -321,7 +337,7 @@ public class LibraryDBMS_ver2 extends Application{
 				colorPickerPaneBackground.setOnAction(e -> {
 					String value = "" + colorPickerPaneBackground.getValue();
 					value = value.substring(value.length() - 8);
-					PANE_STYLES[5] = "-fx-background-color: #" + value ;
+					unSavedPANE_STYLE = "-fx-background-color: #" + value ;
 				});
 				
 				Label idleButton = new Label("Idle Button");
@@ -456,7 +472,6 @@ public class LibraryDBMS_ver2 extends Application{
 				colorPickerTitleColor.setLayoutY(310);
 				customThemePane.getChildren().add(colorPickerTitleColor);				
 				
-				LibraryDBMS_ver2.titleColor = "red" ;
 				colorPickerTitleColor.setValue( Color.RED);
 				colorPickerTitleColor.setOnAction(e -> {
 					String value = "" + colorPickerTitleColor.getValue();
@@ -469,7 +484,7 @@ public class LibraryDBMS_ver2 extends Application{
 					cbThemeMenu.setDisable(false);					
 					primaryStage2.close();
 					
-					PANE_STYLE = PANE_STYLES[styleIndex];
+					PANE_STYLE = PANE_STYLES[styleIndex] = unSavedPANE_STYLE;
 					mainPane.setTop(getTitle());
 					libraryPane.setStyle(PANE_STYLE);
 					
@@ -478,6 +493,9 @@ public class LibraryDBMS_ver2 extends Application{
 					
 					HOVERED_BUTTON_STYLES[5] = hoverButtonBackgroundColor + hoverButtonTextFillColor + hoverButtonBorderColor;
 					HOVERED_BUTTON_STYLE = HOVERED_BUTTON_STYLES[styleIndex];
+					
+					File fileForCustomTheme = new File("customtheme.library");
+					saveThemeFile(fileForCustomTheme);
 				});
 				
 				
@@ -1329,7 +1347,7 @@ public class LibraryDBMS_ver2 extends Application{
 		});
 	    		
 		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
-		primaryStage.setTitle("Library Database Management System version 2.6 by Vision Paudel");	// Set title (Currently version 2.5)
+		primaryStage.setTitle("Library Database Management System version 2.8 by Vision Paudel");	// Set title (Currently version 2.8)
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
 		primaryStage.show();																		// Display the stage
@@ -1341,6 +1359,20 @@ public class LibraryDBMS_ver2 extends Application{
 			
 	}
 	
+	private void saveThemeFile(File file) {
+		PrintWriter newWriter;
+		try {
+			newWriter = new PrintWriter(file);
+			newWriter.println(PANE_STYLES[5]);
+			newWriter.println(IDLE_BUTTON_STYLES[5]);
+			newWriter.println(HOVERED_BUTTON_STYLES[5]);
+			newWriter.println(titleColor);			
+			newWriter.close();
+		}catch (Exception ex) {
+			ex.printStackTrace();
+		}		
+	}
+		
 	private void saveCSVFile(File file) {
 		PrintWriter newWriter;
 		try {
