@@ -184,8 +184,8 @@ public class LibraryDBMS_ver2 extends Application{
 		libraryPane.getChildren().add(lbl_date_Created);
 		
 		Button exportToFile = new Button("Export to File(s)");
-		exportToFile.setLayoutX(423);
-		exportToFile.setLayoutY(85);
+		exportToFile.setLayoutX(450);
+		exportToFile.setLayoutY(90);
 		libraryPane.getChildren().add(exportToFile);
 		
 		exportToFile.setStyle(IDLE_BUTTON_STYLE);
@@ -556,14 +556,14 @@ public class LibraryDBMS_ver2 extends Application{
 		cbStatusMenu.getItems().addAll(statusItemsList);
 		
 		TextField tf_Library_Name = new TextField();
-		tf_Library_Name.setLayoutX(160);
+		tf_Library_Name.setLayoutX(180);
 		tf_Library_Name.setLayoutY(55);
 		tf_Library_Name.setText(my_Current_Library.getLibrary_Name());
 		tf_Library_Name.setEditable(false);
 		libraryPane.getChildren().add(tf_Library_Name);
 		
 		Button btn_Change_Library_Name = new Button("Change");
-		btn_Change_Library_Name.setLayoutX(310);
+		btn_Change_Library_Name.setLayoutX(370);
 		btn_Change_Library_Name.setLayoutY(55);
 		libraryPane.getChildren().add(btn_Change_Library_Name);
 		btn_Change_Library_Name.setStyle(IDLE_BUTTON_STYLE);
@@ -586,7 +586,7 @@ public class LibraryDBMS_ver2 extends Application{
 		
 				
 		Button btnSaveBackup = new Button("Backup Library Data", imageViewSaveBackup);
-		btnSaveBackup.setLayoutX(380);
+		btnSaveBackup.setLayoutX(450);
 		btnSaveBackup.setLayoutY(55);
 		libraryPane.getChildren().add(btnSaveBackup);
 		
@@ -618,13 +618,13 @@ public class LibraryDBMS_ver2 extends Application{
 		ObservableList<Book> book_data = FXCollections.observableArrayList();
 	    ListView<Book> listViewBooks = new ListView<Book>(book_data);
 	    listViewBooks.setLayoutX(80);
-	    listViewBooks.setLayoutY(120);
-	    listViewBooks.setPrefSize(450, 250);
+	    listViewBooks.setLayoutY(125);
+	    listViewBooks.setPrefSize(495, 250);
 	    fillBookList(book_data);
 	    libraryPane.getChildren().add(listViewBooks);
 	    
 	    Button btn_Add_Book = new Button("Add a Book!");
-	    btn_Add_Book.setLayoutX(100);
+	    btn_Add_Book.setLayoutX(80);
 	    btn_Add_Book.setLayoutY(380);
 		libraryPane.getChildren().add(btn_Add_Book);
 		btn_Add_Book.setStyle(IDLE_BUTTON_STYLE);
@@ -632,7 +632,7 @@ public class LibraryDBMS_ver2 extends Application{
 		btn_Add_Book.setOnMouseExited(e -> btn_Add_Book.setStyle(IDLE_BUTTON_STYLE));
 		
 		Button btn_Edit_Book = new Button("Edit Book!");
-		btn_Edit_Book.setLayoutX(195);
+		btn_Edit_Book.setLayoutX(185);
 		btn_Edit_Book.setLayoutY(380);
 		btn_Edit_Book.setDisable(true);
 		libraryPane.getChildren().add(btn_Edit_Book);
@@ -650,7 +650,7 @@ public class LibraryDBMS_ver2 extends Application{
 		btn_Remove_Book.setOnMouseExited(e -> btn_Remove_Book.setStyle(IDLE_BUTTON_STYLE));
 		
 		Label lbl_NumBooks = new Label("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
-		lbl_NumBooks.setLayoutX(380);
+		lbl_NumBooks.setLayoutX(395);
 		lbl_NumBooks.setLayoutY(385);
 		libraryPane.getChildren().add(lbl_NumBooks);
 	    
@@ -761,7 +761,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_Book_Title);
 			
 			TextField tf_Book_Title = new TextField();
-			tf_Book_Title.setLayoutX(70);
+			tf_Book_Title.setLayoutX(85);
 			tf_Book_Title.setLayoutY(10);
 			tf_Book_Title.setEditable(true);
 			addABookPane.getChildren().add(tf_Book_Title);	
@@ -852,7 +852,7 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_Cancel.setOnMouseEntered(ex -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
 			btn_Cancel.setOnMouseExited(ex -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 			
-			Scene addABookScene = new Scene(addABookPane, 380, 500);
+			Scene addABookScene = new Scene(addABookPane, 400, 500);
 			Stage primaryStage2 = new Stage();
 						
 			primaryStage2.setTitle("Add a Book");
@@ -870,7 +870,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_Volume);
 			
 			TextField tf_Volume = new TextField();
-			tf_Volume.setLayoutX(110);
+			tf_Volume.setLayoutX(150);
 			tf_Volume.setLayoutY(150);
 			tf_Volume.setMaxWidth(110);
 			tf_Volume.setEditable(true);
@@ -882,7 +882,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_Edition);
 			
 			TextField tf_Edition = new TextField();
-			tf_Edition.setLayoutX(110);
+			tf_Edition.setLayoutX(150);
 			tf_Edition.setLayoutY(180);
 			tf_Edition.setMaxWidth(110);
 			tf_Edition.setEditable(true);
@@ -894,7 +894,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_NumPages);
 			
 			TextField tf_NumPages = new TextField();
-			tf_NumPages.setLayoutX(110);
+			tf_NumPages.setLayoutX(150);
 			tf_NumPages.setLayoutY(210);
 			tf_NumPages.setEditable(true);
 			tf_NumPages.setMaxWidth(110);
@@ -906,7 +906,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_ISBN);
 			
 			TextField tf_ISBN = new TextField();
-			tf_ISBN.setLayoutX(110);
+			tf_ISBN.setLayoutX(150);
 			tf_ISBN.setLayoutY(240);
 			tf_ISBN.setEditable(true);
 			tf_ISBN.setMaxWidth(110);
@@ -1161,7 +1161,7 @@ public class LibraryDBMS_ver2 extends Application{
 			btn_Cancel.setOnMouseEntered(ex -> btn_Cancel.setStyle(HOVERED_BUTTON_STYLE));
 			btn_Cancel.setOnMouseExited(ex -> btn_Cancel.setStyle(IDLE_BUTTON_STYLE));
 			
-			Scene editBookScene = new Scene(editBookPane, 380, 500);
+			Scene editBookScene = new Scene(editBookPane, 400, 500);
 			Stage primaryStage2 = new Stage();
 						
 			primaryStage2.setTitle("Edit Book");
@@ -1180,7 +1180,7 @@ public class LibraryDBMS_ver2 extends Application{
 			
 			TextField tf_Volume = new TextField();
 			tf_Volume.setText(my_Current_Book.getVolume());
-			tf_Volume.setLayoutX(110);
+			tf_Volume.setLayoutX(150);
 			tf_Volume.setLayoutY(150);
 			tf_Volume.setMaxWidth(110);
 			tf_Volume.setEditable(true);
@@ -1193,7 +1193,7 @@ public class LibraryDBMS_ver2 extends Application{
 			
 			TextField tf_Edition = new TextField();
 			tf_Edition.setText(my_Current_Book.getEdition());
-			tf_Edition.setLayoutX(110);
+			tf_Edition.setLayoutX(150);
 			tf_Edition.setLayoutY(180);
 			tf_Edition.setMaxWidth(110);
 			tf_Edition.setEditable(true);
@@ -1206,7 +1206,7 @@ public class LibraryDBMS_ver2 extends Application{
 			
 			TextField tf_NumPages = new TextField();
 			tf_NumPages.setText(my_Current_Book.getNumber_Of_Pages());
-			tf_NumPages.setLayoutX(110);
+			tf_NumPages.setLayoutX(150);
 			tf_NumPages.setLayoutY(210);
 			tf_NumPages.setEditable(true);
 			tf_NumPages.setMaxWidth(110);
@@ -1219,7 +1219,7 @@ public class LibraryDBMS_ver2 extends Application{
 			
 			TextField tf_ISBN = new TextField();
 			tf_ISBN.setText(my_Current_Book.getISBN());
-			tf_ISBN.setLayoutX(110);
+			tf_ISBN.setLayoutX(150);
 			tf_ISBN.setLayoutY(240);
 			tf_ISBN.setEditable(true);
 			tf_ISBN.setMaxWidth(110);
@@ -1385,7 +1385,7 @@ public class LibraryDBMS_ver2 extends Application{
     		lbl_NumBooks.setText("Total Number of Books: " + my_Current_Library.getNum_Of_Books());
 		});
 	    		
-		Scene mainScene = new Scene(mainPane, 600, 600);											// Create 600 by 600 scene with main pane
+		Scene mainScene = new Scene(mainPane, 720, 720);											// Create 600 by 600 scene with main pane
 		primaryStage.setTitle("Library Database Management System version 2.9 by Vision Paudel");	// Set title (Currently version 2.9)
 		primaryStage.setScene(mainScene);															// Set scene unto stage
 		primaryStage.setResizable(false);															// Disable window resizing
