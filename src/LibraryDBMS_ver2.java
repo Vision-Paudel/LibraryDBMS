@@ -988,7 +988,7 @@ public class LibraryDBMS_ver2 extends Application{
 			addABookPane.getChildren().add(lbl_Status);
 			
 			TextField tf_takenOrReservedBy = new TextField();
-			tf_takenOrReservedBy.setLayoutX(174);
+			tf_takenOrReservedBy.setLayoutX(210);
 			tf_takenOrReservedBy.setLayoutY(400);
 			tf_takenOrReservedBy.setEditable(false);
 			tf_takenOrReservedBy.setVisible(false);
@@ -1068,7 +1068,7 @@ public class LibraryDBMS_ver2 extends Application{
 			
 			TextField tf_Book_Title = new TextField();
 			tf_Book_Title.setText(my_Current_Book.getTitle());
-			tf_Book_Title.setLayoutX(70);
+			tf_Book_Title.setLayoutX(85);
 			tf_Book_Title.setLayoutY(10);
 			tf_Book_Title.setEditable(true);
 			editBookPane.getChildren().add(tf_Book_Title);	
@@ -1303,7 +1303,7 @@ public class LibraryDBMS_ver2 extends Application{
 			editBookPane.getChildren().add(lbl_Status);
 			
 			TextField tf_takenOrReservedBy = new TextField();
-			tf_takenOrReservedBy.setLayoutX(174);
+			tf_takenOrReservedBy.setLayoutX(210);
 			tf_takenOrReservedBy.setLayoutY(400);
 			tf_takenOrReservedBy.setEditable(false);
 			tf_takenOrReservedBy.setVisible(false);
