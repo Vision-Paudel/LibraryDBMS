@@ -320,7 +320,7 @@ public class LibraryDBMS_ver2 extends Application{
 		cbThemeMenu.setLayoutY(20);
 		libraryPane.getChildren().add(cbThemeMenu);
 		
-		btn_custom_color.setLayoutX(530);
+		btn_custom_color.setLayoutX(550);
 		btn_custom_color.setLayoutY(20);
 		libraryPane.getChildren().add(btn_custom_color);
 		btn_custom_color.setStyle("-fx-background-color: linear-gradient(to top, #ff0000, #ffff00);");
